@@ -28,8 +28,10 @@
     "crypto": "0.0.3",
     "lodash": "^3.5.0",
     "nopt": "^3.0.1",
+    "pretty-inspect": "0.0.1",
     "printf": "^0.2.1",
     "q": "^1.2.0",
+    "recast": "^0.10.11",
     "source-map-support": "^0.2.10"
   },
   "devDependencies": {
