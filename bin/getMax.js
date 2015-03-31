@@ -7,8 +7,8 @@
 */
 
 var _ = require('lodash');
-var SampleClass = require('../lib/src/sample-class');
-var sampleClass = new SampleClass();
+var AstSearcher = require('../lib/src/ast-searcher');
+var AstSearcher = new AstSearcher();
 
 // https://www.npmjs.com/package/nopt
 var nopt     = require('nopt');
@@ -85,10 +85,10 @@ if (_.isArray(parsed.number) && _.isArray(remain_numbers)) {
   all_numbers = remain_numbers;
 }
 
-result = sampleClass.getMaxNumber(all_numbers);
+result = AstSearcher.getMaxNumber(all_numbers);
 
 is_verbose && console.log('\n all_numbers:');
 is_verbose && inspect(all_numbers);
 
-is_verbose && console.log('\n sampleClass.getMaxNumber(all_numbers) -->');
+is_verbose && console.log('\n AstSearcher.getMaxNumber(all_numbers) -->');
 console.log(result);
