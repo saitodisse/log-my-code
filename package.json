@@ -26,7 +26,7 @@
     "babel": "^4.7.12",
     "colors": "^1.0.3",
     "crypto": "0.0.3",
-    "lodash": "^3.5.0",
+    "lodash": "^3.6.0",
     "nopt": "^3.0.1",
     "pretty-inspect": "0.0.1",
     "printf": "^0.2.1",

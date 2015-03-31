@@ -2,9 +2,6 @@ var recast = require('recast');
 
 class ConsoleLogSnippet {
   constructor(param) {
-    if (!param) {
-      param = 'arguments';
-    }
     this._from_code = [
       'console.log(' + param + ')'
     ].join('\n');
