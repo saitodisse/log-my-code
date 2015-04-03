@@ -1,0 +1,14 @@
+{
+  "name": "_sandbox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "instrumented_goal.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^2.1.3"
+  }
+}
