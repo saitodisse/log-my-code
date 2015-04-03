@@ -24,8 +24,11 @@
   "homepage": "https://github.com/azukiapp/ast-logger",
   "dependencies": {
     "babel": "^4.7.12",
+    "bluebird": "^2.9.24",
     "colors": "^1.0.3",
     "crypto": "0.0.3",
+    "fs-extra": "^0.18.0",
+    "glob": "^5.0.3",
     "lodash": "^3.6.0",
     "nopt": "^3.0.1",
     "pretty-inspect": "0.0.1",

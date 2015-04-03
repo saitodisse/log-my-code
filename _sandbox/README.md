@@ -18,7 +18,7 @@ DEBUG=* ./file1.js
 ![alt text](https://files.gitter.im/saitodisse/WonM/blob "Result")
 
 
-## TODO
+## Proposal
 
 - [ ] insert snippet below at top of the file
 ```js
