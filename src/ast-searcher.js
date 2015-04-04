@@ -5,9 +5,14 @@ var recast = require('recast');
 // var ConsoleLogSnippet = require('./snippets/console.log');
 
 /**
- * AstSearcher
+ * AstSearcher (static class)
+ * use directly: AstSearcher.searchMainBody(souceCode.ast);
  */
-class AstSearcher {
+module.exports = class AstSearcher {
+
+  constructor() {
+    throw new Error('use directly: AstSearcher.searchMainBody(souceCode.ast)');
+  }
 
   /**
    * Search for main body of the program
@@ -110,6 +115,4 @@ class AstSearcher {
   //   }, this);
   // }
 
-}
-
-module.exports = AstSearcher;
+};

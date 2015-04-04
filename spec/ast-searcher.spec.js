@@ -8,6 +8,10 @@ import AstSearcher from '../src/ast-searcher';
  */
 describe('AstSearcher (static class):', function() {
 
+  it('should throw error when someone try to instantiate this class', function () {
+    h.expect( () => (new AstSearcher()) ).to.throw(Error);
+  });
+
   describe('searchMainBody:', function () {
 
     it('should search for the main body', function() {
