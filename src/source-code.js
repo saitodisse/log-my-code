@@ -1,7 +1,6 @@
 var recast = require('recast');
 var fileUtils = require('./file-utils');
 var bb = require('bluebird');
-var spawn = bb.coroutine;
 
 var instructions = [
   'You should create SourceCodeFile instance with code or filename:',
@@ -17,36 +16,47 @@ class SourceCode {
   constructor(opts) {
     this.__code = null;
     this.__ast = null;
+    this.__file_path = null;
 
     // validate
-    var doesNotHaveOpt = !opts.file && !opts.code;
-    var hasToManyOpts = !opts.file && !opts.code;
-    if (doesNotHaveOpt || hasToManyOpts) {
+    var doesNotHaveOpt = !opts.file && !opts.code && !opts.ast;
+    if (doesNotHaveOpt) {
       throw new Error(instructions);
     }
 
-    // from code
+    // from code string
     if (opts.code) {
-      this.__initialize(opts.code);
+      this.__initialize(opts.code, null);
     }
 
-    // from file
+    // from source-code file
     if (opts.file) {
+      this.__file_path = opts.file;
       return this.__loadFromFile(opts.file);
+    }
+
+    // from ast string
+    if (opts.ast) {
+      this.__initialize(null, opts.ast);
     }
   }
 
-  __initialize(code) {
-    this.__code = code;
-    this.__ast = recast.parse(code);
+  __initialize(code, ast) {
+    if (code) {
+      this.__code = code;
+      this.__ast = recast.parse(code);
+    } else if (ast) {
+      this.__ast = ast;
+      this.__code = recast.print(ast).code;
+    }
   }
 
   // async call.
-  // spawn(function* -> returns a promise and can use 'yield'
+  // bb.coroutine(function* -> returns a promise and can use 'yield'
   __loadFromFile(full_path) {
-    return spawn(function* (full_path) {
+    return bb.coroutine(function* (full_path) {
       var file_content = yield fileUtils.read(full_path);
-      this.__initialize(file_content);
+      this.__initialize(file_content, null);
       return this;
     }.bind(this))(full_path);
   }
@@ -57,6 +67,10 @@ class SourceCode {
 
   get ast() {
     return this.__ast;
+  }
+
+  get filepath() {
+    return this.__file_path;
   }
 
 }
