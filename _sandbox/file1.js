@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 var debug = require('debug')('file1.js');
+var __debug_log = require('./__debug_log'); //FIXME: extract this to a npm lib
+
 var inner = require('./folder/file2.js');
 
 function sum(a, b) {
@@ -11,20 +13,20 @@ function sum(a, b) {
   };
 
   __debug_data__.return_data = a + b;
-  debug(__debug_data__);
+  __debug_log.log(debug, __debug_data__);
   return a + b;
 }
 
-var times = function (a, b) {
+var times = function (options) {
   var __debug_data__ = {
     name: 'times',
     arguments: arguments,
     line: {original_line: 21}
   };
 
-  __debug_data__.return_data = a * b;
-  debug(__debug_data__);
-  return a * b;
+  __debug_data__.return_data = { result: options.a * options.b };
+  __debug_log.log(debug, __debug_data__);
+  return { result: options.a * options.b };
 };
 
 // RUN async
@@ -32,7 +34,7 @@ var total = 0;
 
 total = total + sum(1, 1);
 setTimeout(function () {
-  total = total + times(1, 2);
+  total = total + times({a: 1, b: 2}).result;
   setTimeout(function () {
     total = total + inner.sum_inner(0, 2);
     // TOTAL

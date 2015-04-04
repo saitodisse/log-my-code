@@ -1,4 +1,5 @@
 var debug = require('debug')('inner/file2.js');
+var __debug_log = require('../__debug_log');
 
 module.exports = {
   sum_inner: function(a, b) {
@@ -9,7 +10,7 @@ module.exports = {
     };
 
     __debug_data__.return_data = a + b;
-    debug(__debug_data__);
+    __debug_log.log(debug, __debug_data__);
     return a + b;
   }
 };
