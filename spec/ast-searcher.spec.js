@@ -1,40 +1,25 @@
 import h from './spec-helper';
+import SourceCode from '../src/source-code';
 import AstSearcher from '../src/ast-searcher';
 
 /**
  * ast-logger spec example
  * uses mocha and chai
  */
-describe('AstSearcher:', function() {
-
-  var astSearcher;
-
-  beforeEach(function () {
-    astSearcher = new AstSearcher();
-  });
-
-  it('should be instatiable', function() {
-    h.expect(astSearcher).to.not.be.undefined;
-  });
-
-  it('should not have code and ast', function() {
-    h.expect(astSearcher.original_code).to.be.null;
-    h.expect(astSearcher.ast).to.be.null;
-  });
-  //---------------------------------------------------------------
+describe('AstSearcher (static class):', function() {
 
   describe('searchMainBody:', function () {
 
     it('should search for the main body', function() {
-      astSearcher.original_code = [
+      var sourceCode = new SourceCode({ code: [
         'var path = require(\'path\');',
         '',
         'var sum = function(a, b) {',
         '  return a + b;',
         '}',
-      ].join('\n');
+      ].join('\n') });
 
-      var bodyArray = AstSearcher.searchMainBody(astSearcher.ast);
+      var bodyArray = AstSearcher.searchMainBody(sourceCode.ast);
       h.expect(bodyArray).to.be.an.array;
       h.expect(bodyArray[0].type).to.be.equal('VariableDeclaration');
       h.expect(bodyArray[1].type).to.be.equal('VariableDeclaration');
@@ -46,32 +31,32 @@ describe('AstSearcher:', function() {
   describe('searchFunctions:', function () {
 
     it('should search for one function', function() {
-      astSearcher.original_code = [
+      var sourceCode = new SourceCode({ code: [
         'var sum = function(a, b) {',
         '  return a + b;',
         '}',
-      ].join('\n');
+      ].join('\n') });
 
-      var functions_list = astSearcher.searchFunctions();
+      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
       h.expect(functions_list).to.have.length(1);
     });
 
     it('should search for two functions', function() {
-      astSearcher.original_code = [
+      var sourceCode = new SourceCode({ code: [
         'var sum = function(a, b) {',
         '  return a + b;',
         '}',
         'var sum2 = function(a, b) {',
         '  return a + b;',
         '}',
-      ].join('\n');
+      ].join('\n') });
 
-      var functions_list = astSearcher.searchFunctions();
+      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
       h.expect(functions_list).to.have.length(2);
     });
 
     it('should search for inner functions', function() {
-      astSearcher.original_code = [
+      var sourceCode = new SourceCode({ code: [
         'var sum = function(a, b) {',
         '  return (function() { return a + b })(a, b);',
         '}',
@@ -81,9 +66,9 @@ describe('AstSearcher:', function() {
         '  }',
         '  return sumInner(a, b);',
         '}',
-      ].join('\n');
+      ].join('\n') });
 
-      var functions_list = astSearcher.searchFunctions();
+      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
       h.expect(functions_list).to.have.length(4);
     });
 
@@ -98,15 +83,15 @@ describe('AstSearcher:', function() {
           lines: {},
           indent: 0 };
 
-      h.expect(astSearcher._isInside(1, 0, loc)).to.eql(false);
-      h.expect(astSearcher._isInside(1, 1, loc)).to.eql(false);
-      h.expect(astSearcher._isInside(2, 9, loc)).to.eql(false);
-      h.expect(astSearcher._isInside(2, 10, loc)).to.eql(true);
-      h.expect(astSearcher._isInside(3, 1, loc)).to.eql(true);
-      h.expect(astSearcher._isInside(3, 10, loc)).to.eql(true);
-      h.expect(astSearcher._isInside(3, 100, loc)).to.eql(true);
-      h.expect(astSearcher._isInside(4, 1, loc)).to.eql(true);
-      h.expect(astSearcher._isInside(4, 2, loc)).to.eql(false);
+      h.expect(AstSearcher._isInside(1, 0, loc)).to.eql(false);
+      h.expect(AstSearcher._isInside(1, 1, loc)).to.eql(false);
+      h.expect(AstSearcher._isInside(2, 9, loc)).to.eql(false);
+      h.expect(AstSearcher._isInside(2, 10, loc)).to.eql(true);
+      h.expect(AstSearcher._isInside(3, 1, loc)).to.eql(true);
+      h.expect(AstSearcher._isInside(3, 10, loc)).to.eql(true);
+      h.expect(AstSearcher._isInside(3, 100, loc)).to.eql(true);
+      h.expect(AstSearcher._isInside(4, 1, loc)).to.eql(true);
+      h.expect(AstSearcher._isInside(4, 2, loc)).to.eql(false);
     });
 
   });
@@ -115,15 +100,15 @@ describe('AstSearcher:', function() {
   describe('searchFunctionOnLocation:', function () {
 
     it('should search for one function', function() {
-      astSearcher.original_code = [
+      var sourceCode = new SourceCode({ code: [
         'var number = 5;',
         'var sum = function(a, b) {',
         '  return a + b;',
         '};',
-      ].join('\n');
+      ].join('\n') });
 
-      h.expect(astSearcher.searchFunctionOnLocation(1, 1)).to.be.null;
-      h.expect(astSearcher.searchFunctionOnLocation(3, 1)).to.not.be.null;
+      h.expect(AstSearcher.searchFunctionOnLocation(sourceCode.ast, 1, 1)).to.be.null;
+      h.expect(AstSearcher.searchFunctionOnLocation(sourceCode.ast, 3, 1)).to.not.be.null;
     });
 
   });
@@ -133,17 +118,17 @@ describe('AstSearcher:', function() {
   //
   //   it('should insert console log before', function() {
   //     // parse code
-  //     astSearcher.original_code = [
+  //     AstSearcher.original_code = [
   //       'var sum = function(a, b) {',
   //       '  return a + b;',
   //       '}',
   //     ].join('\n');
-  //     var functions_list = astSearcher.searchFunctions();
+  //     var functions_list = AstSearcher.searchFunctions();
   //
   //     // insert snippet
-  //     astSearcher.instrumentInsertConsoleLogArgumentsBeforeFunction(functions_list[0]);
+  //     AstSearcher.instrumentInsertConsoleLogArgumentsBeforeFunction(functions_list[0]);
   //
-  //     h.expect(astSearcher.code).to.eql([
+  //     h.expect(AstSearcher.code).to.eql([
   //       'var sum = function(a, b) {',
   //       '  console.log(arguments);',
   //       '  return a + b;',
@@ -153,7 +138,7 @@ describe('AstSearcher:', function() {
   //
   //   it('should insert console log before inner function', function() {
   //     // parse code
-  //     astSearcher.original_code = [
+  //     AstSearcher.original_code = [
   //       'var sum = function(a, b) {',
   //       '  return (function() {',
   //       '    return a + b;',
@@ -166,12 +151,12 @@ describe('AstSearcher:', function() {
   //       '  return sumInner(a, b);',
   //       '}',
   //     ].join('\n');
-  //     var functions_list = astSearcher.searchFunctions();
+  //     var functions_list = AstSearcher.searchFunctions();
   //
   //     // insert snippet
-  //     astSearcher.instrumentInsertConsoleLogArgumentsBeforeFunction(functions_list[1]);
+  //     AstSearcher.instrumentInsertConsoleLogArgumentsBeforeFunction(functions_list[1]);
   //
-  //     h.expect(astSearcher.code).to.eql([
+  //     h.expect(AstSearcher.code).to.eql([
   //       'var sum = function(a, b) {',
   //       '  return (function() {',
   //       '    console.log(arguments);',
@@ -194,7 +179,7 @@ describe('AstSearcher:', function() {
   //
   //   it('should insert before all', function() {
   //     // parse code
-  //     astSearcher.original_code = [
+  //     AstSearcher.original_code = [
   //       'var sum = function(a, b) {',
   //       '  return (function() {',
   //       '    return a + b;',
@@ -209,9 +194,9 @@ describe('AstSearcher:', function() {
   //     ].join('\n');
   //
   //     // insert snippet
-  //     astSearcher.instrumentInsertConsoleLogArgumentsBeforeAllFunctions();
+  //     AstSearcher.instrumentInsertConsoleLogArgumentsBeforeAllFunctions();
   //
-  //     h.expect(astSearcher.code).to.eql([
+  //     h.expect(AstSearcher.code).to.eql([
   //       'var sum = function(a, b) {',
   //       '  console.log(arguments);',
   //       '  return (function() {',

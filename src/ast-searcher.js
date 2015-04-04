@@ -22,10 +22,10 @@ class AstSearcher {
    * Search for all functions node on ast
    * @return {Array}   All functions AST nodes
    */
-  searchFunctions() {
+   static searchFunctions(ast) {
     var functions_list = [];
     var types = recast.types;
-    types.visit(this.ast, {
+    types.visit(ast, {
       visitFunction: function(path) {
         var node = path.node;
         functions_list.push(node);
@@ -39,11 +39,11 @@ class AstSearcher {
    * Search for a functions on specified location
    * @return {ast object}   the function node
    */
-  searchFunctionOnLocation(current_line, current_column) {
+   static searchFunctionOnLocation(ast, current_line, current_column) {
     var selected_function = null;
     var types = recast.types;
     var _isInside = this._isInside;
-    types.visit(this.ast, {
+    types.visit(ast, {
       visitFunction: function(path) {
         var node = path.node;
         var loc = node.loc;
@@ -60,7 +60,7 @@ class AstSearcher {
     return selected_function;
   }
 
-  _isInside(current_line, current_column, loc) {
+  static _isInside(current_line, current_column, loc) {
     // check if is inside lines
     if (current_line < loc.start.line || current_line > loc.end.line) {
       return false;
