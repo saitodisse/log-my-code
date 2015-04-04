@@ -23,6 +23,26 @@ describe('AstSearcher:', function() {
   });
   //---------------------------------------------------------------
 
+  describe('searchMainBody:', function () {
+
+    it('should search for the main body', function() {
+      astSearcher.original_code = [
+        'var path = require(\'path\');',
+        '',
+        'var sum = function(a, b) {',
+        '  return a + b;',
+        '}',
+      ].join('\n');
+
+      var bodyArray = AstSearcher.searchMainBody(astSearcher.ast);
+      h.expect(bodyArray).to.be.an.array;
+      h.expect(bodyArray[0].type).to.be.equal('VariableDeclaration');
+      h.expect(bodyArray[1].type).to.be.equal('VariableDeclaration');
+    });
+
+  });
+  //---------------------------------------------------------------
+
   describe('searchFunctions:', function () {
 
     it('should search for one function', function() {
@@ -109,108 +129,108 @@ describe('AstSearcher:', function() {
   });
   //---------------------------------------------------------------
 
-  describe('instrument Insert ConsoleLog Arguments Before Function:', function () {
-
-    it('should insert console log before', function() {
-      // parse code
-      astSearcher.original_code = [
-        'var sum = function(a, b) {',
-        '  return a + b;',
-        '}',
-      ].join('\n');
-      var functions_list = astSearcher.searchFunctions();
-
-      // insert snippet
-      astSearcher.instrumentInsertConsoleLogArgumentsBeforeFunction(functions_list[0]);
-
-      h.expect(astSearcher.code).to.eql([
-        'var sum = function(a, b) {',
-        '  console.log(arguments);',
-        '  return a + b;',
-        '}',
-      ].join('\n'));
-    });
-
-    it('should insert console log before inner function', function() {
-      // parse code
-      astSearcher.original_code = [
-        'var sum = function(a, b) {',
-        '  return (function() {',
-        '    return a + b;',
-        '  })(a, b);',
-        '}',
-        'var sum2 = function(a, b) {',
-        '  var sumInner = function(a, b) {',
-        '    return a + b;',
-        '  }',
-        '  return sumInner(a, b);',
-        '}',
-      ].join('\n');
-      var functions_list = astSearcher.searchFunctions();
-
-      // insert snippet
-      astSearcher.instrumentInsertConsoleLogArgumentsBeforeFunction(functions_list[1]);
-
-      h.expect(astSearcher.code).to.eql([
-        'var sum = function(a, b) {',
-        '  return (function() {',
-        '    console.log(arguments);',
-        '    return a + b;',
-        '  })(a, b);',
-        '}',
-        'var sum2 = function(a, b) {',
-        '  var sumInner = function(a, b) {',
-        '    return a + b;',
-        '  }',
-        '  return sumInner(a, b);',
-        '}',
-      ].join('\n'));
-    });
-
-  });
-  //---------------------------------------------------------------
-
-  describe('instrument Insert ConsoleLog Arguments Before All Functions:', function () {
-
-    it('should insert before all', function() {
-      // parse code
-      astSearcher.original_code = [
-        'var sum = function(a, b) {',
-        '  return (function() {',
-        '    return a + b;',
-        '  })(a, b);',
-        '}',
-        'var sum2 = function(a, b) {',
-        '  var sumInner = function(a, b) {',
-        '    return a + b;',
-        '  }',
-        '  return sumInner(a, b);',
-        '}',
-      ].join('\n');
-
-      // insert snippet
-      astSearcher.instrumentInsertConsoleLogArgumentsBeforeAllFunctions();
-
-      h.expect(astSearcher.code).to.eql([
-        'var sum = function(a, b) {',
-        '  console.log(arguments);',
-        '  return (function() {',
-        '    console.log(arguments);',
-        '    return a + b;',
-        '  })(a, b);',
-        '}',
-        'var sum2 = function(a, b) {',
-        '  console.log(arguments);',
-        '  var sumInner = function(a, b) {',
-        '    console.log(arguments);',
-        '    return a + b;',
-        '  }',
-        '  return sumInner(a, b);',
-        '}',
-      ].join('\n'));
-    });
-
-  });
-  //---------------------------------------------------------------
+  // describe('instrument Insert ConsoleLog Arguments Before Function:', function () {
+  //
+  //   it('should insert console log before', function() {
+  //     // parse code
+  //     astSearcher.original_code = [
+  //       'var sum = function(a, b) {',
+  //       '  return a + b;',
+  //       '}',
+  //     ].join('\n');
+  //     var functions_list = astSearcher.searchFunctions();
+  //
+  //     // insert snippet
+  //     astSearcher.instrumentInsertConsoleLogArgumentsBeforeFunction(functions_list[0]);
+  //
+  //     h.expect(astSearcher.code).to.eql([
+  //       'var sum = function(a, b) {',
+  //       '  console.log(arguments);',
+  //       '  return a + b;',
+  //       '}',
+  //     ].join('\n'));
+  //   });
+  //
+  //   it('should insert console log before inner function', function() {
+  //     // parse code
+  //     astSearcher.original_code = [
+  //       'var sum = function(a, b) {',
+  //       '  return (function() {',
+  //       '    return a + b;',
+  //       '  })(a, b);',
+  //       '}',
+  //       'var sum2 = function(a, b) {',
+  //       '  var sumInner = function(a, b) {',
+  //       '    return a + b;',
+  //       '  }',
+  //       '  return sumInner(a, b);',
+  //       '}',
+  //     ].join('\n');
+  //     var functions_list = astSearcher.searchFunctions();
+  //
+  //     // insert snippet
+  //     astSearcher.instrumentInsertConsoleLogArgumentsBeforeFunction(functions_list[1]);
+  //
+  //     h.expect(astSearcher.code).to.eql([
+  //       'var sum = function(a, b) {',
+  //       '  return (function() {',
+  //       '    console.log(arguments);',
+  //       '    return a + b;',
+  //       '  })(a, b);',
+  //       '}',
+  //       'var sum2 = function(a, b) {',
+  //       '  var sumInner = function(a, b) {',
+  //       '    return a + b;',
+  //       '  }',
+  //       '  return sumInner(a, b);',
+  //       '}',
+  //     ].join('\n'));
+  //   });
+  //
+  // });
+  // //---------------------------------------------------------------
+  //
+  // describe('instrument Insert ConsoleLog Arguments Before All Functions:', function () {
+  //
+  //   it('should insert before all', function() {
+  //     // parse code
+  //     astSearcher.original_code = [
+  //       'var sum = function(a, b) {',
+  //       '  return (function() {',
+  //       '    return a + b;',
+  //       '  })(a, b);',
+  //       '}',
+  //       'var sum2 = function(a, b) {',
+  //       '  var sumInner = function(a, b) {',
+  //       '    return a + b;',
+  //       '  }',
+  //       '  return sumInner(a, b);',
+  //       '}',
+  //     ].join('\n');
+  //
+  //     // insert snippet
+  //     astSearcher.instrumentInsertConsoleLogArgumentsBeforeAllFunctions();
+  //
+  //     h.expect(astSearcher.code).to.eql([
+  //       'var sum = function(a, b) {',
+  //       '  console.log(arguments);',
+  //       '  return (function() {',
+  //       '    console.log(arguments);',
+  //       '    return a + b;',
+  //       '  })(a, b);',
+  //       '}',
+  //       'var sum2 = function(a, b) {',
+  //       '  console.log(arguments);',
+  //       '  var sumInner = function(a, b) {',
+  //       '    console.log(arguments);',
+  //       '    return a + b;',
+  //       '  }',
+  //       '  return sumInner(a, b);',
+  //       '}',
+  //     ].join('\n'));
+  //   });
+  //
+  // });
+  // //---------------------------------------------------------------
 
 });

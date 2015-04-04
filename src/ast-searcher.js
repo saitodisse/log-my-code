@@ -1,34 +1,21 @@
 // var _ = require('lodash');
 
 var recast = require('recast');
-var _ = require('lodash');
-var ConsoleLogSnippet = require('./snippets/console.log');
+// var _ = require('lodash');
+// var ConsoleLogSnippet = require('./snippets/console.log');
 
 /**
  * AstSearcher
  */
 class AstSearcher {
 
-  constructor() {
-    this._original_code = null;
-    this._ast = null;
-  }
-
-  set original_code(string_code) {
-    this._original_code = string_code;
-    this._ast = recast.parse(string_code);
-  }
-
-  get original_code() {
-    return this._original_code;
-  }
-
-  get ast() {
-    return this._ast;
-  }
-
-  get code() {
-    return recast.print(this.ast).code;
+  /**
+   * Search for main body of the program
+   * @return {Array}   main body array AST node
+   */
+   static searchMainBody(ast) {
+    var body = ast.program.body;
+    return body;
   }
 
   /**
@@ -95,33 +82,33 @@ class AstSearcher {
     return true;
   }
 
-  /**
-   * Insert an AST on function's body start
-   * @param {ast object}   function_node    AST node
-   * @param {ast object}   snippet_ast      AST node
-   */
-  insertSnippetBeforeFunctionBody(function_node, snippet_ast) {
-    function_node.body.body.unshift(snippet_ast);
-  }
-
-  /**
-   * Insert a console.log(arguments) AST on function's body start
-   * @param {ast object}   function_node    AST node
-   */
-  instrumentInsertConsoleLogArgumentsBeforeFunction(function_node, console_content = 'arguments') {
-    var snippet_instance = new ConsoleLogSnippet(console_content);
-    this.insertSnippetBeforeFunctionBody(function_node, snippet_instance.ast);
-  }
-
-  /**
-   * Insert a console.log(arguments) AST on ALL function's body start
-   */
-  instrumentInsertConsoleLogArgumentsBeforeAllFunctions(console_content = 'arguments') {
-    var functions_list = this.searchFunctions();
-    return _.map( functions_list, function(func_node) {
-      this.instrumentInsertConsoleLogArgumentsBeforeFunction(func_node, console_content);
-    }, this);
-  }
+  // /**
+  //  * Insert an AST on function's body start
+  //  * @param {ast object}   function_node    AST node
+  //  * @param {ast object}   snippet_ast      AST node
+  //  */
+  // insertSnippetBeforeFunctionBody(function_node, snippet_ast) {
+  //   function_node.body.body.unshift(snippet_ast);
+  // }
+  //
+  // /**
+  //  * Insert a console.log(arguments) AST on function's body start
+  //  * @param {ast object}   function_node    AST node
+  //  */
+  // instrumentInsertConsoleLogArgumentsBeforeFunction(function_node, console_content = 'arguments') {
+  //   var snippet_instance = new ConsoleLogSnippet(console_content);
+  //   this.insertSnippetBeforeFunctionBody(function_node, snippet_instance.ast);
+  // }
+  //
+  // /**
+  //  * Insert a console.log(arguments) AST on ALL function's body start
+  //  */
+  // instrumentInsertConsoleLogArgumentsBeforeAllFunctions(console_content = 'arguments') {
+  //   var functions_list = this.searchFunctions();
+  //   return _.map( functions_list, function(func_node) {
+  //     this.instrumentInsertConsoleLogArgumentsBeforeFunction(func_node, console_content);
+  //   }, this);
+  // }
 
 }
 
