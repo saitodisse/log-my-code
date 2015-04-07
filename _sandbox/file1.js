@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var debug = require('debug')('file1.js');
-var __debug_log = require('./__debug_log'); //FIXME: extract this to a npm lib
+var astLoggerPrint = require('ast-logger-print');
 
 var inner = require('./folder/file2.js');
 
@@ -13,7 +13,7 @@ function sum(a, b) {
   };
 
   __debug_data__.return_data = a + b;
-  __debug_log.log(debug, __debug_data__);
+  astLoggerPrint.log(debug, __debug_data__);
   return a + b;
 }
 
@@ -25,7 +25,7 @@ var times = function (options) {
   };
 
   __debug_data__.return_data = { result: options.a * options.b };
-  __debug_log.log(debug, __debug_data__);
+  astLoggerPrint.log(debug, __debug_data__);
   return { result: options.a * options.b };
 };
 

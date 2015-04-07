@@ -1,6 +1,6 @@
-import h from './spec-helper';
-import SourceCode from '../src/source-code';
-import AstSearcher from '../src/ast-searcher';
+import h from '../spec-helper';
+import SourceCode from '../../src/source-code';
+import AstSearcher from '../../src/ast-helpers/ast-searcher';
 
 /**
  * ast-logger spec example
@@ -79,7 +79,7 @@ describe('AstSearcher (static class):', function() {
   });
   //---------------------------------------------------------------
 
-  describe('_isInside:', function () {
+  describe('_isLocInsideFunction:', function () {
 
     it('should be inside only if it is inside', function() {
       var loc = { start: { line: 2, column: 10 },
@@ -87,15 +87,15 @@ describe('AstSearcher (static class):', function() {
           lines: {},
           indent: 0 };
 
-      h.expect(AstSearcher._isInside(1, 0, loc)).to.eql(false);
-      h.expect(AstSearcher._isInside(1, 1, loc)).to.eql(false);
-      h.expect(AstSearcher._isInside(2, 9, loc)).to.eql(false);
-      h.expect(AstSearcher._isInside(2, 10, loc)).to.eql(true);
-      h.expect(AstSearcher._isInside(3, 1, loc)).to.eql(true);
-      h.expect(AstSearcher._isInside(3, 10, loc)).to.eql(true);
-      h.expect(AstSearcher._isInside(3, 100, loc)).to.eql(true);
-      h.expect(AstSearcher._isInside(4, 1, loc)).to.eql(true);
-      h.expect(AstSearcher._isInside(4, 2, loc)).to.eql(false);
+      h.expect(AstSearcher._isLocInsideFunction(1, 0, loc)).to.eql(false);
+      h.expect(AstSearcher._isLocInsideFunction(1, 1, loc)).to.eql(false);
+      h.expect(AstSearcher._isLocInsideFunction(2, 9, loc)).to.eql(false);
+      h.expect(AstSearcher._isLocInsideFunction(2, 10, loc)).to.eql(true);
+      h.expect(AstSearcher._isLocInsideFunction(3, 1, loc)).to.eql(true);
+      h.expect(AstSearcher._isLocInsideFunction(3, 10, loc)).to.eql(true);
+      h.expect(AstSearcher._isLocInsideFunction(3, 100, loc)).to.eql(true);
+      h.expect(AstSearcher._isLocInsideFunction(4, 1, loc)).to.eql(true);
+      h.expect(AstSearcher._isLocInsideFunction(4, 2, loc)).to.eql(false);
     });
 
   });

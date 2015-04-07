@@ -20,12 +20,12 @@ DEBUG=* ./file1.js
 
 ## Proposal
 
-- [ ] create a **debug-ast-logger** npm package based on this `__debug_log.js` file
+- [x] create a **debug-ast-logger** npm package based on this `ast-logger-print.js` file
 
 - [ ] insert snippet below at top of the file
 ```js
 var debug = require('debug')('__FILE_NAME_HERE__');
-var __debug_ast_logger__ = require('debug-ast-logger');
+var __astLoggerPrint__ = require('ast-logger-print');
 ```
 
 - [ ] insert snippet below on top of each function
@@ -40,5 +40,5 @@ var __debug_data__ = {
 - [ ] insert snippet below before each return statement
 ```js
 __debug_data__.return_data = __RETURN_EXPRESSION__;
-__debug_log.log(debug, __debug_data__);
+__astLoggerPrint__.log(debug, __debug_data__);
 ```

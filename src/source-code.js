@@ -24,28 +24,27 @@ class SourceCode {
       throw new Error(instructions);
     }
 
-    // from code string
     if (opts.code) {
-      this.__initialize(opts.code, null);
-    }
-
-    // from source-code file
-    if (opts.file) {
+      // from code string
+      this.__initialize(opts.code, null, opts.file);
+    } else if (opts.ast) {
+      // from ast string
+      this.__initialize(null, opts.ast, opts.file);
+    } else if (opts.file) {
+      // from source-code file
       this.__file_path = opts.file;
       return this.__loadFromFile(opts.file);
     }
 
-    // from ast string
-    if (opts.ast) {
-      this.__initialize(null, opts.ast);
-    }
   }
 
-  __initialize(code, ast) {
+  __initialize(code, ast, file_path) {
     if (code) {
+      this.__file_path = file_path;
       this.__code = code;
       this.__ast = recast.parse(code);
     } else if (ast) {
+      this.__file_path = file_path;
       this.__ast = ast;
       this.__code = recast.print(ast).code;
     }

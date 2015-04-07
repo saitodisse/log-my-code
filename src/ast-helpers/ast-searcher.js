@@ -2,7 +2,6 @@
 
 var recast = require('recast');
 // var _ = require('lodash');
-// var ConsoleLogSnippet = require('./snippets/console.log');
 
 /**
  * AstSearcher (static class)
@@ -47,14 +46,14 @@ module.exports = class AstSearcher {
    static searchFunctionOnLocation(ast, current_line, current_column) {
     var selected_function = null;
     var types = recast.types;
-    var _isInside = this._isInside;
+    var _isLocInsideFunction = this._isLocInsideFunction;
     types.visit(ast, {
       visitFunction: function(path) {
         var node = path.node;
         var loc = node.loc;
 
         // loc start check
-        if (_isInside(current_line, current_column, loc)) {
+        if (_isLocInsideFunction(current_line, current_column, loc)) {
           selected_function = node;
           return false;
         } else {
@@ -65,7 +64,7 @@ module.exports = class AstSearcher {
     return selected_function;
   }
 
-  static _isInside(current_line, current_column, loc) {
+  static _isLocInsideFunction(current_line, current_column, loc) {
     // check if is inside lines
     if (current_line < loc.start.line || current_line > loc.end.line) {
       return false;
@@ -86,33 +85,5 @@ module.exports = class AstSearcher {
     // must be inside
     return true;
   }
-
-  // /**
-  //  * Insert an AST on function's body start
-  //  * @param {ast object}   function_node    AST node
-  //  * @param {ast object}   snippet_ast      AST node
-  //  */
-  // insertSnippetBeforeFunctionBody(function_node, snippet_ast) {
-  //   function_node.body.body.unshift(snippet_ast);
-  // }
-  //
-  // /**
-  //  * Insert a console.log(arguments) AST on function's body start
-  //  * @param {ast object}   function_node    AST node
-  //  */
-  // instrumentInsertConsoleLogArgumentsBeforeFunction(function_node, console_content = 'arguments') {
-  //   var snippet_instance = new ConsoleLogSnippet(console_content);
-  //   this.insertSnippetBeforeFunctionBody(function_node, snippet_instance.ast);
-  // }
-  //
-  // /**
-  //  * Insert a console.log(arguments) AST on ALL function's body start
-  //  */
-  // instrumentInsertConsoleLogArgumentsBeforeAllFunctions(console_content = 'arguments') {
-  //   var functions_list = this.searchFunctions();
-  //   return _.map( functions_list, function(func_node) {
-  //     this.instrumentInsertConsoleLogArgumentsBeforeFunction(func_node, console_content);
-  //   }, this);
-  // }
 
 };
