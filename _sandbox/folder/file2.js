@@ -11,6 +11,6 @@ module.exports = {
 
     __debug_data__.return_data = a + b;
     __astLoggerPrint__(debug, __debug_data__);
-    return a + b;
+    return __debug_data__.return_data;
   }
 };
