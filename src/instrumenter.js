@@ -1,6 +1,5 @@
 // var _ = require('lodash');
 
-import AstSearcher  from './ast-helpers/ast-searcher';
 import AstInserter  from './ast-helpers/ast-inserter';
 import SourceCode  from './source-code';
 var RequireDebugSnippet = require('./snippets/require-debug');
