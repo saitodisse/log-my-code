@@ -22,13 +22,13 @@ DEBUG=* ./file1.js
 
 - [x] create a **debug-ast-logger** npm package based on this `ast-logger-print.js` file
 
-- [ ] insert snippet below at top of the file
+- [x] insert snippet below at top of the file
 ```js
 var debug = require('debug')('__FILE_NAME_HERE__');
 var __astLoggerPrint__ = require('ast-logger-print');
 ```
 
-- [ ] insert snippet below on top of each function
+- [x] insert snippet below on top of each function
 ```js
 var __debug_data__ = {
   name: '__FUNCTION_NAME__',
