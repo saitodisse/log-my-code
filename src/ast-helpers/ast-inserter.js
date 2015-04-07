@@ -27,8 +27,11 @@ class AstInserter {
    * @param {ast object}   function_node      AST node
    * @param {ast object}   snippet_ast      AST node
    */
-   static insertSnippetBeforeFunctionBody(function_node, snippet_ast) {
-    function_node.body.body.unshift(snippet_ast);
+  static insertSnippetBeforeFunctionBody(function_node, snippet_ast) {
+    // /**/console.log('\n>>---------\n function_node:\n', function_node, '\n>>---------\n');/*-debug-*/
+    // /**/console.log('\n>>---------\n snippet_ast:\n', snippet_ast, '\n>>---------\n');/*-debug-*/
+    function_node.body.body.unshift(snippet_ast[0]);
+    // /**/console.log('\n>>---------\n function_node:\n', require('util').inspect(function_node, { showHidden: false, depth: null, colors: true }), '\n>>---------\n');/*-debug-*/
   }
 
   // /**

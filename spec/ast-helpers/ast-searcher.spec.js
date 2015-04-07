@@ -79,6 +79,35 @@ describe('AstSearcher (static class):', function() {
   });
   //---------------------------------------------------------------
 
+  describe('searchFunctionName:', function () {
+
+    it('should get "sum" name', function() {
+      var sourceCode = new SourceCode({ code: [
+        'function sum(a, b) {',
+        '  return a + b;',
+        '}',
+      ].join('\n') });
+
+      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
+      var function_name = AstSearcher.searchFunctionName(functions_list[0]);
+      h.expect(function_name).to.equal('sum');
+    });
+
+    it('should not get name from anonymous function', function() {
+      var sourceCode = new SourceCode({ code: [
+        'var f = function (a, b) {',
+        '  return a + b;',
+        '}',
+      ].join('\n') });
+
+      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
+      var function_name = AstSearcher.searchFunctionName(functions_list[0]);
+      h.expect(function_name).to.equal('anonymous');
+    });
+
+  });
+  //---------------------------------------------------------------
+
   describe('_isLocInsideFunction:', function () {
 
     it('should be inside only if it is inside', function() {
@@ -117,109 +146,5 @@ describe('AstSearcher (static class):', function() {
 
   });
   //---------------------------------------------------------------
-
-  // describe('instrument Insert ConsoleLog Arguments Before Function:', function () {
-  //
-  //   it('should insert console log before', function() {
-  //     // parse code
-  //     AstSearcher.original_code = [
-  //       'var sum = function(a, b) {',
-  //       '  return a + b;',
-  //       '}',
-  //     ].join('\n');
-  //     var functions_list = AstSearcher.searchFunctions();
-  //
-  //     // insert snippet
-  //     AstSearcher.instrumentInsertConsoleLogArgumentsBeforeFunction(functions_list[0]);
-  //
-  //     h.expect(AstSearcher.code).to.eql([
-  //       'var sum = function(a, b) {',
-  //       '  console.log(arguments);',
-  //       '  return a + b;',
-  //       '}',
-  //     ].join('\n'));
-  //   });
-  //
-  //   it('should insert console log before inner function', function() {
-  //     // parse code
-  //     AstSearcher.original_code = [
-  //       'var sum = function(a, b) {',
-  //       '  return (function() {',
-  //       '    return a + b;',
-  //       '  })(a, b);',
-  //       '}',
-  //       'var sum2 = function(a, b) {',
-  //       '  var sumInner = function(a, b) {',
-  //       '    return a + b;',
-  //       '  }',
-  //       '  return sumInner(a, b);',
-  //       '}',
-  //     ].join('\n');
-  //     var functions_list = AstSearcher.searchFunctions();
-  //
-  //     // insert snippet
-  //     AstSearcher.instrumentInsertConsoleLogArgumentsBeforeFunction(functions_list[1]);
-  //
-  //     h.expect(AstSearcher.code).to.eql([
-  //       'var sum = function(a, b) {',
-  //       '  return (function() {',
-  //       '    console.log(arguments);',
-  //       '    return a + b;',
-  //       '  })(a, b);',
-  //       '}',
-  //       'var sum2 = function(a, b) {',
-  //       '  var sumInner = function(a, b) {',
-  //       '    return a + b;',
-  //       '  }',
-  //       '  return sumInner(a, b);',
-  //       '}',
-  //     ].join('\n'));
-  //   });
-  //
-  // });
-  // //---------------------------------------------------------------
-  //
-  // describe('instrument Insert ConsoleLog Arguments Before All Functions:', function () {
-  //
-  //   it('should insert before all', function() {
-  //     // parse code
-  //     AstSearcher.original_code = [
-  //       'var sum = function(a, b) {',
-  //       '  return (function() {',
-  //       '    return a + b;',
-  //       '  })(a, b);',
-  //       '}',
-  //       'var sum2 = function(a, b) {',
-  //       '  var sumInner = function(a, b) {',
-  //       '    return a + b;',
-  //       '  }',
-  //       '  return sumInner(a, b);',
-  //       '}',
-  //     ].join('\n');
-  //
-  //     // insert snippet
-  //     AstSearcher.instrumentInsertConsoleLogArgumentsBeforeAllFunctions();
-  //
-  //     h.expect(AstSearcher.code).to.eql([
-  //       'var sum = function(a, b) {',
-  //       '  console.log(arguments);',
-  //       '  return (function() {',
-  //       '    console.log(arguments);',
-  //       '    return a + b;',
-  //       '  })(a, b);',
-  //       '}',
-  //       'var sum2 = function(a, b) {',
-  //       '  console.log(arguments);',
-  //       '  var sumInner = function(a, b) {',
-  //       '    console.log(arguments);',
-  //       '    return a + b;',
-  //       '  }',
-  //       '  return sumInner(a, b);',
-  //       '}',
-  //     ].join('\n'));
-  //   });
-  //
-  // });
-  // //---------------------------------------------------------------
 
 });

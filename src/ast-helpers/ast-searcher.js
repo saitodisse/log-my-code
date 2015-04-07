@@ -83,4 +83,16 @@ module.exports = class AstSearcher {
     return true;
   }
 
+  /**
+   * Search function name
+   * @return {Array}   All functions AST nodes
+   */
+  static searchFunctionName(func_ast) {
+    if (func_ast.id && func_ast.id.name) {
+      return func_ast.id.name;
+    } else {
+      return 'anonymous';
+    }
+  }
+
 };

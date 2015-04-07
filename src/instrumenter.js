@@ -33,22 +33,21 @@ class Instrumenter {
 
     // get all functions
     var allFunctions = AstSearcher.searchFunctions(sourceCode.ast);
-    var firstFunctionArray = R.take(1, allFunctions);
-    var firstFunction_ast = firstFunctionArray[0];
 
-    // get snippet AST
-    var snippet_instance = new DebugDataSnippet('FUNCTION_NAME', firstFunction_ast.loc.start.line);
-    var snippet_ast = snippet_instance.ast;
+    allFunctions.forEach(function (func) {
+      // get function's name
+      var func_name = AstSearcher.searchFunctionName(func);
 
-    AstInserter.insertSnippetBeforeFunctionBody(firstFunction_ast, snippet_ast);
+      // get snippet AST
+      var snippet_instance = new DebugDataSnippet(func_name, func.loc.start.line);
+      var snippet_ast = snippet_instance.ast;
 
-    /**/console.log('\n>>---------\n firstFunction_ast:\n', require('util').inspect(firstFunction_ast, { showHidden: false, depth: 3, colors: true }), '\n>>---------\n');/*-debug-*/
+      AstInserter.insertSnippetBeforeFunctionBody(func, snippet_ast);
+    });
 
-    //
-    // var new_ast = AstInserter.insertSnippetBeforeMainProgramBody(sourceCode.ast, snippet_ast);
-    // var source_code_new = new SourceCode({ ast: new_ast });
-    //
-    // return source_code_new.code;
+    var source_code_new = new SourceCode({ ast: sourceCode.ast });
+
+    return source_code_new.code;
   }
 
 }

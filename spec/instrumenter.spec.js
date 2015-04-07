@@ -47,7 +47,7 @@ describe('Instrumenter:', function() {
         code: [
           "var path = require('path');",
           "",
-          "var sum = function(a, b) {",
+          "function sum(a, b) {",
           "  return a + b;",
           "}",
         ].join('\n'),
@@ -57,12 +57,11 @@ describe('Instrumenter:', function() {
       h.expect(new_code).to.eql([
         "var path = require('path');",
         "",
-        "var sum = function(a, b) {",
-        "",
+        "function sum(a, b) {",
         "  var __debug_data__ = {",
         "    name: 'sum',",
         "    arguments: arguments,",
-        "    line: {original_line: 2}",
+        "    line: {original_line: 3}",
         "  };",
         "",
         "  return a + b;",

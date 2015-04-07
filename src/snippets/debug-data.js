@@ -3,11 +3,10 @@ var recast = require('recast');
 class DebugDataSnippet {
   constructor(function_name, original_line_number) {
     this._from_code = [
-      "",
       "var __debug_data__ = {",
-      "name: '" + function_name + "',",
-      "arguments: arguments,",
-      "line: {original_line: " + original_line_number + "}",
+      "  name: '" + function_name + "',",
+      "  arguments: arguments,",
+      "  line: {original_line: " + original_line_number + "}",
       "};",
       "",
       "",
