@@ -1,7 +1,4 @@
-// var _ = require('lodash');
-
 import AstSearcher from './ast-searcher';
-// var RequireDebugSnippet = require('./snippets/require-debug');
 
 /**
  * AstInserter (static class)

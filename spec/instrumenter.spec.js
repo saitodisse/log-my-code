@@ -40,4 +40,37 @@ describe('Instrumenter:', function() {
   });
   //---------------------------------------------------------------
 
+  describe('addDebugFunctionCall:', function () {
+
+    it('should insert __debug_data__ on top of the function', function() {
+      var sourceCode = new SourceCode({
+        code: [
+          "var path = require('path');",
+          "",
+          "var sum = function(a, b) {",
+          "  return a + b;",
+          "}",
+        ].join('\n'),
+        file: './some-file.js' });
+      var new_code = Instrumenter.addDebugFunctionCall(sourceCode);
+
+      h.expect(new_code).to.eql([
+        "var path = require('path');",
+        "",
+        "var sum = function(a, b) {",
+        "",
+        "  var __debug_data__ = {",
+        "    name: 'sum',",
+        "    arguments: arguments,",
+        "    line: {original_line: 2}",
+        "  };",
+        "",
+        "  return a + b;",
+        "}",
+      ].join('\n'));
+    });
+
+  });
+  //---------------------------------------------------------------
+
 });

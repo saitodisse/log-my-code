@@ -1,7 +1,4 @@
-// var _ = require('lodash');
-
 var recast = require('recast');
-// var _ = require('lodash');
 
 /**
  * AstSearcher (static class)
