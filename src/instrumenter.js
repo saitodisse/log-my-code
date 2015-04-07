@@ -1,4 +1,4 @@
-var R = require('ramda');
+// var R = require('ramda');
 
 import AstSearcher  from './ast-helpers/ast-searcher';
 import AstInserter  from './ast-helpers/ast-inserter';

@@ -1,3 +1,4 @@
+var recast = require('recast');
 import AstSearcher from './ast-searcher';
 
 /**
@@ -24,14 +25,41 @@ class AstInserter {
 
   /**
    * Insert an AST on function's body start
-   * @param {ast object}   function_node      AST node
+   * @param {ast object}   function_node    AST node
    * @param {ast object}   snippet_ast      AST node
    */
   static insertSnippetBeforeFunctionBody(function_node, snippet_ast) {
-    // /**/console.log('\n>>---------\n function_node:\n', function_node, '\n>>---------\n');/*-debug-*/
-    // /**/console.log('\n>>---------\n snippet_ast:\n', snippet_ast, '\n>>---------\n');/*-debug-*/
     function_node.body.body.unshift(snippet_ast[0]);
-    // /**/console.log('\n>>---------\n function_node:\n', require('util').inspect(function_node, { showHidden: false, depth: null, colors: true }), '\n>>---------\n');/*-debug-*/
+  }
+
+  /**
+   * Insert an AST on function's return statements
+   * @param {ast object}   function_node    AST node
+   * @param {ast object}   snippet_ast      AST node
+   */
+  static replaceFunctionReturnWithSnippet(function_node, snippet_ast) {
+
+    var types = recast.types;
+    types.visit(function_node, {
+      visitReturnStatement: function(path) {
+        var return_block_body = path.parentPath.value;
+        return_block_body.pop();
+
+        snippet_ast.forEach(function (ast_part) {
+          return_block_body.push(ast_part);
+        });
+
+        this.traverse(path);
+      },
+    });
+    return function_node;
+
+    // return_statement_ast.pop();
+    // snippet_ast.forEach(function (ast_part) {
+    //   return_statement_ast.push(ast_part);
+    // });
+    // /**/console.log('\n>>---------\n return_statement_ast:\n', require('util').inspect(return_statement_ast, { showHidden: false, depth: 2, colors: true }), '\n>>---------\n');/*-debug-*/
+    // function_node.body.body.unshift(snippet_ast[0]);
   }
 
   // /**

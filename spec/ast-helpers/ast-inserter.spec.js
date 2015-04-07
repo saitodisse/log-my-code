@@ -1,5 +1,12 @@
 import h from '../spec-helper';
 import AstInserter from '../../src/ast-helpers/ast-inserter';
+import AstSearcher from '../../src/ast-helpers/ast-searcher';
+
+// import RequireDebugSnippet from '../../src/snippets/require-debug';
+import DebugDataSnippet    from '../../src/snippets/debug-data';
+import DebugReturnSnippet    from '../../src/snippets/debug-return';
+
+import SourceCode from '../../src/source-code';
 
 /**
  * debug-insert
@@ -11,32 +18,80 @@ describe('AstInserter:', function() {
   });
   //---------------------------------------------------------------
 
-  describe('instrument Insert ConsoleLog Arguments Before Function:', function () {
+  describe('insertSnippetBeforeFunctionBody:', function () {
 
-    it.skip('should insert console log before', function() {
-      var debugInsert = new AstInserter([
-        "var path = require('path');",
+    it('should insert console log before', function() {
+
+      // original code
+      var sourceCode = new SourceCode({ code: [
+        "function sum(a, b) {",
+        "  return a + b;",
+        "}",
+      ].join('\n') });
+
+      // get function
+      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
+      var first_function_ast = functions_list[0];
+
+      // get snippet AST
+      var snippet_instance = new DebugDataSnippet('FUNCTION_NAME', first_function_ast.loc.start.line);
+      var snippet_ast = snippet_instance.ast;
+
+      // ! insert Snippet Before Function Body
+      AstInserter.insertSnippetBeforeFunctionBody(first_function_ast, snippet_ast);
+
+      // check result
+      var result_source_code = new SourceCode({ ast: first_function_ast });
+      h.expect(result_source_code.code).to.eql([
+        "function sum(a, b) {",
+        "  var __debug_data__ = {",
+        "    name: 'FUNCTION_NAME',",
+        "    arguments: arguments,",
+        "    line: {original_line: 1}",
+        "  };",
         "",
-        "var sum = function(a, b) {",
         "  return a + b;",
         "}",
       ].join('\n'));
 
-      debugInsert._addDebugLibRequire('some-file.js');
-      var code = debugInsert.code;
-
-      h.expect(code).to.eql([
-        "var debug = require('debug')('some-file.js');",
-        "var __debug_ast_logger__ = require('debug-ast-logger');",
-        "var path = require('path');",
-        "",
-        "var sum = function(a, b) {",
-        "  return a + b;",
-        "}",
-      ].join('\n'));
     });
 
   });
   //---------------------------------------------------------------
 
+  describe('Insert return statement:', function () {
+
+    it('should insert console log before', function() {
+      // original code
+      var sourceCode = new SourceCode({ code: [
+        "function sum(a, b) {",
+        "  return a + b;",
+        "}",
+      ].join('\n') });
+
+      // get function
+      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
+      var first_function_ast = functions_list[0];
+
+      // get snippet AST
+      var snippet_instance = new DebugReturnSnippet('a + b');
+      var snippet_ast = snippet_instance.ast;
+
+      // ! insert Snippet On Return Function
+      AstInserter.replaceFunctionReturnWithSnippet(first_function_ast, snippet_ast);
+
+      // check result
+      var result_source_code = new SourceCode({ ast: first_function_ast });
+      h.expect(result_source_code.code).to.eql([
+        "function sum(a, b) {",
+        "  __debug_data__.return_data = (a + b);",
+        "  __astLoggerPrint__(debug, __debug_data__);",
+        "  return __debug_data__.return_data;",
+        "}",
+      ].join('\n'));
+
+    });
+
+  });
+  //---------------------------------------------------------------
 });

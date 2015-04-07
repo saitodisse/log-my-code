@@ -104,7 +104,7 @@ module.exports = class AstSearcher {
     var types = recast.types;
     types.visit(func_ast, {
       visitReturnStatement: function(path) {
-        return_statements.push(path.value.argument);
+        return_statements.push(path.value);
         this.traverse(path);
       },
     });
