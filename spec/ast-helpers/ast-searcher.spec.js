@@ -108,6 +108,25 @@ describe('AstSearcher (static class):', function() {
   });
   //---------------------------------------------------------------
 
+  describe('searchFunctionReturnExpression:', function () {
+
+    it('should get return expression', function() {
+      var sourceCode = new SourceCode({ code: [
+        'function sum(a, b) {',
+        '  return a + b;',
+        '}',
+      ].join('\n') });
+
+      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
+      var return_statements_ast = AstSearcher.searchFunctionReturnExpression(functions_list[0]);
+
+      var sourceCodeReturnExpression = new SourceCode({ ast: return_statements_ast[0] });
+      h.expect(sourceCodeReturnExpression.code).to.equal('a + b');
+    });
+
+  });
+  //---------------------------------------------------------------
+
   describe('_isLocInsideFunction:', function () {
 
     it('should be inside only if it is inside', function() {

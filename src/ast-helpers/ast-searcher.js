@@ -85,7 +85,7 @@ module.exports = class AstSearcher {
 
   /**
    * Search function name
-   * @return {Array}   All functions AST nodes
+   * @return {string}   function name
    */
   static searchFunctionName(func_ast) {
     if (func_ast.id && func_ast.id.name) {
@@ -93,6 +93,22 @@ module.exports = class AstSearcher {
     } else {
       return 'anonymous';
     }
+  }
+
+  /**
+   * Search function's return expression
+   * @return {AST}   function's return expression AST
+   */
+  static searchFunctionReturnExpression(func_ast) {
+    var return_statements = [];
+    var types = recast.types;
+    types.visit(func_ast, {
+      visitReturnStatement: function(path) {
+        return_statements.push(path.value.argument);
+        this.traverse(path);
+      },
+    });
+    return return_statements;
   }
 
 };
