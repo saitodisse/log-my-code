@@ -39,13 +39,15 @@ class AstInserter {
    */
   static replaceFunctionReturnWithSnippet(function_node, snippet_ast) {
 
+    var existsReturnStatement = false;
     var types = recast.types;
     types.visit(function_node, {
       visitReturnStatement: function(path) {
+        existsReturnStatement = true;
         // get all block from return
         var return_block_body = path.parentPath.value;
-        return_block_body.pop();
 
+        return_block_body.pop();
         snippet_ast.forEach(function (ast_part) {
           return_block_body.push(ast_part);
         });
@@ -53,6 +55,11 @@ class AstInserter {
         this.traverse(path);
       },
     });
+
+    if (!existsReturnStatement) {
+      function_node.body.body = function_node.body.body.concat(snippet_ast);
+    }
+
     return function_node;
   }
 

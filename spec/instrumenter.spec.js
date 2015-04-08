@@ -153,6 +153,54 @@ describe('Instrumenter:', function() {
       ].join('\n'));
     });
 
+    it('should full instrument strange functions', function() {
+      var sourceCode = new SourceCode({
+        code: [
+          "setTimeout(function () {",
+          "  total = total + times({a: 1, b: 2}).result;",
+          "  setTimeout(function () {",
+          "    total = total + inner.sum_inner(0, 2);",
+          "    // TOTAL",
+          "    console.log('total:', total);",
+          "  }, 200);",
+          "}, 200);",
+        ].join('\n'),
+        file: './some-file.js' });
+
+      var new_code = Instrumenter.instrumentAllFunctions(sourceCode);
+
+      h.expect(new_code).to.eql([
+        "var debug = require('debug')('./some-file.js');",
+        "var __astLoggerPrint__ = require('ast-logger-print');",
+        "setTimeout(function () {",
+        "  var __debug_data__ = {",
+        "    name: 'anonymous',",
+        "    arguments: arguments,",
+        "    line: {original_line: 1}",
+        "  };",
+        "",
+        "  total = total + times({a: 1, b: 2}).result;",
+        "  setTimeout(function () {",
+        "    var __debug_data__ = {",
+        "      name: 'anonymous',",
+        "      arguments: arguments,",
+        "      line: {original_line: 3}",
+        "    };",
+        "",
+        "    total = total + inner.sum_inner(0, 2);",
+        "    // TOTAL",
+        "    console.log('total:', total);",
+        "    __debug_data__.return_data = ('no_ret');",
+        "    __astLoggerPrint__(debug, __debug_data__);",
+        "    return __debug_data__.return_data;",
+        "  }, 200);",
+        "  __debug_data__.return_data = ('no_ret');",
+        "  __astLoggerPrint__(debug, __debug_data__);",
+        "  return __debug_data__.return_data;",
+        "}, 200);",
+      ].join('\n'));
+    });
+
   });
   //---------------------------------------------------------------
 

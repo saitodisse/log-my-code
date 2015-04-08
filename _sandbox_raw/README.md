@@ -10,5 +10,5 @@ npm i ast-logger-print
 #### run
 
 ```
-DEBUG=* ./file1.js
+DEBUG=* node ./file1.js
 ```

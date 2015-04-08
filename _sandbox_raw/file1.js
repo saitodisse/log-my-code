@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 var inner = require('./folder/file2.js');
 
 function sum(a, b) {

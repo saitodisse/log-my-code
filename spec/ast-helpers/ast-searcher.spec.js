@@ -124,6 +124,33 @@ describe('AstSearcher (static class):', function() {
       h.expect(sourceCodeReturnExpression.code).to.equal('return a + b;');
     });
 
+    it('should get not get return expression if does not exist', function() {
+      var sourceCode = new SourceCode({ code: [
+        'function sum(a, b) {',
+        '  var result = a + b;',
+        '}',
+      ].join('\n') });
+
+      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
+      var return_statements_ast = AstSearcher.searchFunctionReturnExpression(functions_list[0]);
+
+      h.expect(return_statements_ast).to.deep.equal([]);
+    });
+
+    it('should get two returns', function() {
+      var sourceCode = new SourceCode({ code: [
+        'function max(a, b) {',
+        '  if (a => b) return a;',
+        '  else return b;',
+        '}',
+      ].join('\n') });
+
+      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
+      var return_statements_ast = AstSearcher.searchFunctionReturnExpression(functions_list[0]);
+
+      h.expect(return_statements_ast.length).to.deep.equal(2);
+    });
+
   });
   //---------------------------------------------------------------
 

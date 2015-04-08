@@ -2,6 +2,10 @@ var recast = require('recast');
 
 class DebugReturnSnippet {
   constructor(return_statement_code) {
+    if (!return_statement_code) {
+      return_statement_code = "'no_ret'";
+    }
+
     this._from_code = [
       "__debug_data__.return_data = (" + return_statement_code + ");",
       "__astLoggerPrint__(debug, __debug_data__);",

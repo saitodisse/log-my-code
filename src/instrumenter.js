@@ -60,13 +60,22 @@ class Instrumenter {
 
       // get current return statement
       var return_statement_ast = AstSearcher.searchFunctionReturnExpression(func);
-      var return_argument_ast = return_statement_ast[0].argument;
 
-      // get code from AST
-      var return_argument_source_code = new SourceCode({ ast: return_argument_ast });
+      var return_argument_ast, return_argument_source_code, return_statement_code = '';
+
+      if (return_statement_ast && return_statement_ast.length > 0) {
+        return_argument_ast = return_statement_ast[0].argument;
+      }
+
+      if (return_argument_ast) {
+        // FIXME: instrument others returns statements
+        // get code from AST
+        return_argument_source_code = new SourceCode({ ast: return_argument_ast });
+        return_statement_code = return_argument_source_code.code;
+      }
 
       // get snippet AST
-      var snippet_instance = new DebugReturnSnippet(return_argument_source_code.code);
+      var snippet_instance = new DebugReturnSnippet(return_statement_code);
       var snippet_ast = snippet_instance.ast;
 
       // insert Snippet On Return Function
