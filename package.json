@@ -21,7 +21,7 @@
   "homepage": "https://github.com/azukiapp/ast-logger",
   "dependencies": {
     "ast-logger-print": "0.0.2",
-    "babel": "^5.0.8",
+    "babel-runtime": "^5.0.10",
     "bluebird": "^2.9.24",
     "colors": "^1.0.3",
     "fs-extra": "^0.18.0",

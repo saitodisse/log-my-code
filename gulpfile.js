@@ -6,7 +6,7 @@ var mocha      = require('gulp-mocha');
 var rimraf     = require('rimraf');
 var sourcemaps = require('gulp-sourcemaps');
 var yargs      = require('yargs');
-require('babel/polyfill');
+
 require('source-map-support').install();
 
 /*
@@ -26,7 +26,7 @@ gulp.task('clean-lib-spec', function (cb) {
 gulp.task('babel-src', ['clean-lib-src'], function () {
   return gulp.src('src/**/*.js')
     .pipe(sourcemaps.init())
-    .pipe(babel())
+    .pipe(babel({optional: ['runtime']}))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('lib/src'));
 });
@@ -34,7 +34,7 @@ gulp.task('babel-src', ['clean-lib-src'], function () {
 gulp.task('babel-spec', ['clean-lib-spec'], function () {
   return gulp.src('spec/**/*.js')
     .pipe(sourcemaps.init())
-    .pipe(babel())
+    .pipe(babel({optional: ['runtime']}))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('lib/spec'));
 });
