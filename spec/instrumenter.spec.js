@@ -103,4 +103,57 @@ describe('Instrumenter:', function() {
   });
   //---------------------------------------------------------------
 
+  describe('instrumentAllFunctions:', function () {
+
+    it('should full instrument all functions', function() {
+      var sourceCode = new SourceCode({
+        code: [
+          "var path = require('path');",
+          "",
+          "function sum(a, b) {",
+          "  return a + b;",
+          "}",
+          "",
+          "function times(a, b) {",
+          "  return a * b;",
+          "}",
+        ].join('\n'),
+        file: './some-file.js' });
+
+      var new_code = Instrumenter.instrumentAllFunctions(sourceCode);
+
+      h.expect(new_code).to.eql([
+        "var debug = require('debug')('./some-file.js');",
+        "var __astLoggerPrint__ = require('ast-logger-print');",
+        "var path = require('path');",
+        "",
+        "function sum(a, b) {",
+        "  var __debug_data__ = {",
+        "    name: 'sum',",
+        "    arguments: arguments,",
+        "    line: {original_line: 3}",
+        "  };",
+        "",
+        "  __debug_data__.return_data = (a + b);",
+        "  __astLoggerPrint__(debug, __debug_data__);",
+        "  return __debug_data__.return_data;",
+        "}",
+        "",
+        "function times(a, b) {",
+        "  var __debug_data__ = {",
+        "    name: 'times',",
+        "    arguments: arguments,",
+        "    line: {original_line: 7}",
+        "  };",
+        "",
+        "  __debug_data__.return_data = (a * b);",
+        "  __astLoggerPrint__(debug, __debug_data__);",
+        "  return __debug_data__.return_data;",
+        "}",
+      ].join('\n'));
+    });
+
+  });
+  //---------------------------------------------------------------
+
 });

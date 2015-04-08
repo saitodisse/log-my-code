@@ -79,6 +79,8 @@ class Instrumenter {
 
   static instrumentAllFunctions(sourceCode) {
     Instrumenter.addDebugRequire(sourceCode);
+    Instrumenter.addDebugToAllFunctionsCalls(sourceCode);
+    Instrumenter.addDebugToAllFunctionsReturnStatements(sourceCode);
     var source_code_new = new SourceCode({ ast: sourceCode.ast });
     return source_code_new.code;
   }
