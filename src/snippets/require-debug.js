@@ -2,8 +2,17 @@ var recast = require('recast');
 
 class RequireDebugSnippet {
   constructor(filename) {
+
+    if (!filename) {
+      // if no filename, take from node
+      filename = '__filename';
+    } else {
+      // given filename
+      filename = '\'' + filename + '\'';
+    }
+
     this._from_code = [
-      'var debug = require(\'debug\')(\'' + filename + '\');',
+      'var debug = require(\'debug\')(' + filename + ');',
       'var __astLoggerPrint__ = require(\'ast-logger-print\');',
       '',
     ].join('\n');

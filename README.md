@@ -12,14 +12,8 @@ Allow to add and remove instrumentation code.
 `./some-file.js`:
 
 ```js
-var path = require('path');
-
 function sum(a, b) {
   return a + b;
-}
-
-function times(a, b) {
-  return a * b;
 }
 ```
 
@@ -35,7 +29,6 @@ Result:
 ```js
 var debug = require('debug')('./some-file.js');
 var __astLoggerPrint__ = require('ast-logger-print');
-var path = require('path');
 
 function sum(a, b) {
   var __debug_data__ = {
@@ -45,18 +38,6 @@ function sum(a, b) {
   };
 
   __debug_data__.return_data = (a + b);
-  __astLoggerPrint__(debug, __debug_data__);
-  return __debug_data__.return_data;
-}
-
-function times(a, b) {
-  var __debug_data__ = {
-    name: 'times',
-    arguments: arguments,
-    line: {original_line: 7}
-  };
-
-  __debug_data__.return_data = (a * b);
   __astLoggerPrint__(debug, __debug_data__);
   return __debug_data__.return_data;
 }
