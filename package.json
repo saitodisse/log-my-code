@@ -1,6 +1,6 @@
 {
   "name": "ast-logger",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "ast-logger",
   "main": "index.js",
   "scripts": {
