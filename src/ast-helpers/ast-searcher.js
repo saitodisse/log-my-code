@@ -13,7 +13,7 @@ module.exports = class AstSearcher {
   }
 
   /**
-   * Search for all functions node on ast
+   * Search for all functions paths on ast
    * @return {ast paths Array}   All functions AST nodes
    */
   static getAllFunctionsPaths(ast) {
@@ -82,18 +82,67 @@ module.exports = class AstSearcher {
    * @return {string}   function name
    */
   static getNameFromFunctionPath(func_path) {
+
+    /**
+      function fNAME(a, b) {
+        return a + b;
+      }
+     */
+    var func_node = func_path.node;
+    if (func_node.id && func_node.id.name) {
+      return func_node.id.name;
+    }
+
+    /**
+      var fNAME = function (a, b) {
+        return a + b;
+      }
+     */
     // check if is part of a variable declaration
     if (func_path.parentPath.value.type === 'VariableDeclarator') {
       return func_path.parentPath.value.id.name;
     }
 
-    var func_node = func_path.node;
-
-    if (func_node.id && func_node.id.name) {
-      return func_node.id.name;
-    } else {
-      return 'anonymous';
+    /**
+      obj = {
+        fNAME: function (a, b) {
+          return a + b;
+        }
+      }
+     */
+    if (func_path.parentPath.value.type === 'Property') {
+      return func_path.parentPath.value.key.name;
     }
+
+    /*
+    class F3 {
+      constructor() {}
+      get fNAME1() {}
+      set fNAME2(value) {}
+      fNAME3() {}
+      static fNAME4() {}
+    }
+    */
+    if (func_path.parentPath.value.type === 'MethodDefinition') {
+      var class_name = func_path.parentPath.parentPath.parentPath.parentPath.value.id.name;
+      // /**/console.log('\n>>---------\n func_path.parentPath.value:\n', func_path.parentPath.value, '\n>>---------\n');/*-debug-*/
+      // /**/console.log('\n>>---------\n func_path.parentPath:\n', func_path.parentPath, '\n>>---------\n');/*-debug-*/
+      if (func_path.parentPath.value.key.name === 'constructor' ) {
+        // constructor
+        return 'new ' + class_name + '()';
+      } else if (func_path.parentPath.value.kind === 'get' ||
+        func_path.parentPath.value.kind === 'set') {
+        // get or set
+        var get_or_set_name = func_path.parentPath.value.key.name;
+        return func_path.parentPath.value.kind + ' ' + class_name + '.' + get_or_set_name;
+      } else {
+        // method
+        var static_prefix = func_path.parentPath.value.static ? 'static ' : '';
+        return static_prefix + class_name + '.' + func_path.parentPath.value.key.name + '()';
+      }
+    }
+
+    return 'anonymous';
   }
 
   /**

@@ -1,7 +1,15 @@
-# ast-logger (Log My Code)
+# ast-cyborg (Log My Code)
 
 `ast-logger` will parse all the code searching functions.
 Allow to add and remove instrumentation code.
+
+code -> SourceCode1 -> Searcher.searchFunction -> Modifier.excludeFunction -> ast -> SourceCode2.code
+
+ast-logger can receive code / AST / filepath (JavaScript file) and parse its contents
+to a SourceCode class that will contain a version of the code and AST.
+
+ast-logger can also search inside the AST, and modify parts of it. It will then return
+a new copy of the existing code / AST / filepath.
 
 - **src**:  all files will transpiled with babel to lib/src
 - **spec**: all files will transpiled with babel to lib/spec
