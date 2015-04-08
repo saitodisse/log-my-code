@@ -93,16 +93,28 @@ describe('AstSearcher (static class):', function() {
       h.expect(function_name).to.equal('sum');
     });
 
-    it('should not get name from anonymous function', function() {
+    it('should get name from variable declaration associated to function', function() {
       var sourceCode = new SourceCode({ code: [
-        'var f = function (a, b) {',
+        'var f1 = function (a, b) {',
         '  return a + b;',
         '}',
       ].join('\n') });
 
       var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
       var function_name = AstSearcher.getNameFromFunctionPath(functions_list_path[0]);
-      h.expect(function_name).to.equal('anonymous');
+      h.expect(function_name).to.equal('f1');
+    });
+
+    it('should get name from object declaration', function() {
+      var sourceCode = new SourceCode({ code: [
+        'var obj = {',
+        '  f2: function() {}',
+        '};',
+      ].join('\n') });
+
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      var function_name = AstSearcher.getNameFromFunctionPath(functions_list_path[0]);
+      h.expect(function_name).to.equal('f2');
     });
 
   });

@@ -82,9 +82,15 @@ module.exports = class AstSearcher {
    * @return {string}   function name
    */
   static getNameFromFunctionPath(func_path) {
-    var func_ast = func_path.node;
-    if (func_ast.id && func_ast.id.name) {
-      return func_ast.id.name;
+    // check if is part of a variable declaration
+    if (func_path.parentPath.value.type === 'VariableDeclarator') {
+      return func_path.parentPath.value.id.name;
+    }
+
+    var func_node = func_path.node;
+
+    if (func_node.id && func_node.id.name) {
+      return func_node.id.name;
     } else {
       return 'anonymous';
     }
