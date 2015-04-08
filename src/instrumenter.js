@@ -40,7 +40,8 @@ class Instrumenter {
       var func_name = AstSearcher.searchFunctionName(func);
 
       // get snippet AST
-      var snippet_instance = new DebugDataSnippet(func_name, func.loc.start.line);
+      var line = func.loc && func.loc.start.line;
+      var snippet_instance = new DebugDataSnippet(func_name, line);
       var snippet_ast = snippet_instance.ast;
 
       AstInserter.insertSnippetBeforeFunctionBody(func, snippet_ast);

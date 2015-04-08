@@ -7,6 +7,29 @@ Allow to add and remove instrumentation code.
 - **spec**: all files will transpiled with babel to lib/spec
 - **bin**:  no ocours transpilation here
 
+#### (TODO)
+
+[ ] get functions name in all cases below:
+
+```js
+var f1 = function() {}  //f1
+function f2() {}        //f2
+class F3() {
+  constructor() {}      //new F3()
+  get f5() {}           //get f5
+  set f6(value) {}      //set f6
+  f7() {}               //f7
+}
+var obj = {
+  f8: function() {}     //f8
+}
+() => {}                //anonymous
+(function(){})          //anonymous
+```
+
+[ ] add a `/*-debug-*/` on each line to make easy to remove
+
+
 #### Usage
 
 `./some-file.js`:
@@ -44,20 +67,6 @@ function sum(a, b) {
 ```
 
 obs: will need to install this lib: `npm install ast-logger-print`
-
-#### (TODO)
-
-```js
-// one file
-var debugInsert           = new DebugInsert();
-var original_file_path    = './original_file.js';
-var destination_file_path = './destination_file.js';
-debugInsert.transpileFile(original_file_path, destination_file_path);
-
-// all files TODO
-var debugInsert = new DebugInsert();
-debugInsert.transpileAllFiles('./src/**/*.js', './lib-debug');
-```
 
 #### before start
 
