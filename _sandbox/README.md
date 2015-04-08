@@ -37,7 +37,7 @@ var __debug_data__ = {
 };
 ```
 
-- [ ] insert snippet below before each return statement
+- [x] insert snippet below before each return statement
 ```js
 __debug_data__.return_data = __RETURN_STATEMENT__;
 __astLoggerPrint__(debug, __debug_data__);
