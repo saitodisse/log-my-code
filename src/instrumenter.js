@@ -1,7 +1,7 @@
 // var R = require('ramda');
 
 import AstSearcher  from './ast-helpers/ast-searcher';
-import AstInserter  from './ast-helpers/ast-inserter';
+import AstModifier  from './ast-helpers/ast-modifier';
 import SourceCode  from './source-code';
 
 var RequireDebugSnippet = require('./snippets/require-debug');
@@ -24,7 +24,7 @@ class Instrumenter {
     var snippet_instance = new RequireDebugSnippet(sourceCode.filepath);
     var snippet_ast = snippet_instance.ast;
 
-    var new_ast = AstInserter.insertSnippetBeforeMainProgramBody(sourceCode.ast, snippet_ast);
+    var new_ast = AstModifier.insertSnippetBeforeMainProgramBody(sourceCode.ast, snippet_ast);
     var source_code_new = new SourceCode({ ast: new_ast });
 
     return source_code_new.code;
@@ -44,7 +44,7 @@ class Instrumenter {
       var snippet_instance = new DebugDataSnippet(func_name, line);
       var snippet_ast = snippet_instance.ast;
 
-      AstInserter.insertSnippetBeforeFunctionBody(func, snippet_ast);
+      AstModifier.insertSnippetBeforeFunctionBody(func, snippet_ast);
     });
 
     var source_code_new = new SourceCode({ ast: sourceCode.ast });
@@ -75,7 +75,7 @@ class Instrumenter {
       var snippet_ast = snippet_instance.ast;
 
       // insert Snippet On Return Function
-      AstInserter.replaceFunctionReturnWithSnippet(func, snippet_ast);
+      AstModifier.replaceFunctionReturnWithSnippet(func, snippet_ast);
     });
 
     var source_code_new = new SourceCode({ ast: sourceCode.ast });

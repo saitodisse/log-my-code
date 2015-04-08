@@ -4,21 +4,12 @@ var ast_types = recast.types;
 
 /**
  * AstSearcher (static class)
- * use directly: AstSearcher.searchMainBody(souceCode.ast);
+ * use directly: AstSearcher.searchFunctions(souceCode.ast);
  */
 module.exports = class AstSearcher {
 
   constructor() {
     throw new Error('use directly: AstSearcher.searchMainBody(souceCode.ast)');
-  }
-
-  /**
-   * Search for main body of the program
-   * @return {Array}   main body array AST node
-   */
-   static searchMainBody(ast) {
-    var body = ast.program.body;
-    return body;
   }
 
   /**

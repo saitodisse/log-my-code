@@ -12,7 +12,7 @@ describe('AstSearcher (static class):', function() {
     h.expect( () => (new AstSearcher()) ).to.throw(Error);
   });
 
-  describe('searchMainBody:', function () {
+  describe('program body Array:', function () {
 
     it('should search for the main body', function() {
       var sourceCode = new SourceCode({ code: [
@@ -23,7 +23,7 @@ describe('AstSearcher (static class):', function() {
         '}',
       ].join('\n') });
 
-      var bodyArray = AstSearcher.searchMainBody(sourceCode.ast);
+      var bodyArray = sourceCode.ast.program.body;
       h.expect(bodyArray).to.be.an.array;
       h.expect(bodyArray[0].type).to.be.equal('VariableDeclaration');
       h.expect(bodyArray[1].type).to.be.equal('VariableDeclaration');

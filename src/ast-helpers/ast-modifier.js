@@ -1,14 +1,13 @@
 var recast = require('recast');
-import AstSearcher from './ast-searcher';
 
 /**
- * AstInserter (static class)
- * use directly: AstInserter.addDebugRequireOnTop(souceCode.ast);
+ * AstModifier (static class)
+ * use directly: AstModifier.addDebugRequireOnTop(souceCode.ast);
  */
-class AstInserter {
+class AstModifier {
 
   constructor() {
-    throw new Error('use directly: AstInserter.addDebugRequireOnTop(souceCode.ast);');
+    throw new Error('use directly: AstModifier.addDebugRequireOnTop(souceCode.ast);');
   }
 
   /**
@@ -17,7 +16,7 @@ class AstInserter {
    * @param {ast object}   snippet_ast      AST node
    */
   static insertSnippetBeforeMainProgramBody(original_ast, snippet_ast) {
-    var original_body_ast = AstSearcher.searchMainBody(original_ast);
+    var original_body_ast = original_ast.program.body;
     original_body_ast = snippet_ast.concat(original_body_ast);
     original_ast.program.body = original_body_ast;
     return original_ast;
@@ -84,4 +83,4 @@ class AstInserter {
 
 }
 
-module.exports = AstInserter;
+module.exports = AstModifier;

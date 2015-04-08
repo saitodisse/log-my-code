@@ -1,20 +1,17 @@
-import h from '../spec-helper';
-import AstInserter from '../../src/ast-helpers/ast-inserter';
-import AstSearcher from '../../src/ast-helpers/ast-searcher';
-
-// import RequireDebugSnippet from '../../src/snippets/require-debug';
-import DebugDataSnippet    from '../../src/snippets/debug-data';
-import DebugReturnSnippet    from '../../src/snippets/debug-return';
-
-import SourceCode from '../../src/source-code';
+import h                  from '../spec-helper';
+import AstModifier        from '../../src/ast-helpers/ast-modifier';
+import AstSearcher        from '../../src/ast-helpers/ast-searcher';
+import SourceCode         from '../../src/source-code';
+import DebugDataSnippet   from '../../src/snippets/debug-data';
+import DebugReturnSnippet from '../../src/snippets/debug-return';
 
 /**
  * debug-insert
  */
-describe('AstInserter:', function() {
+describe('AstModifier:', function() {
 
   it('should throw error when someone try to instantiate this class', function () {
-    h.expect( () => (new AstInserter()) ).to.throw(Error);
+    h.expect( () => (new AstModifier()) ).to.throw(Error);
   });
   //---------------------------------------------------------------
 
@@ -38,7 +35,7 @@ describe('AstInserter:', function() {
       var snippet_ast = snippet_instance.ast;
 
       // ! insert Snippet Before Function Body
-      AstInserter.insertSnippetBeforeFunctionBody(first_function_ast, snippet_ast);
+      AstModifier.insertSnippetBeforeFunctionBody(first_function_ast, snippet_ast);
 
       // check result
       var result_source_code = new SourceCode({ ast: first_function_ast });
@@ -78,7 +75,7 @@ describe('AstInserter:', function() {
       var snippet_ast = snippet_instance.ast;
 
       // ! insert Snippet On Return Function
-      AstInserter.replaceFunctionReturnWithSnippet(first_function_ast, snippet_ast);
+      AstModifier.replaceFunctionReturnWithSnippet(first_function_ast, snippet_ast);
 
       // check result
       var result_source_code = new SourceCode({ ast: first_function_ast });
@@ -109,7 +106,7 @@ describe('AstInserter:', function() {
       var snippet_ast = snippet_instance.ast;
 
       // ! insert Snippet On Return Function
-      AstInserter.replaceFunctionReturnWithSnippet(first_function_ast, snippet_ast);
+      AstModifier.replaceFunctionReturnWithSnippet(first_function_ast, snippet_ast);
 
       // check result
       var result_source_code = new SourceCode({ ast: first_function_ast });
