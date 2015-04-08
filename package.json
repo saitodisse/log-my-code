@@ -11,9 +11,6 @@
     "type": "git",
     "url": "https://github.com/azukiapp/ast-logger.git"
   },
-  "bin": {
-    "getMax": "./bin/getMax.js"
-  },
   "keywords": [
     "azk"
   ],
