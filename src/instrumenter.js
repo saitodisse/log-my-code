@@ -60,17 +60,12 @@ class Instrumenter {
     allFunctions.forEach(function (func) {
 
       // get current return statement
-      var return_statement_ast = AstSearcher.searchFunctionReturnExpression(func);
+      var return_statement_path = AstSearcher.searchFunctionReturnExpression(func);
 
       var return_argument_ast, return_argument_source_code, return_statement_code = '';
 
-      if (return_statement_ast && return_statement_ast.length > 0) {
-        return_argument_ast = return_statement_ast[0].argument;
-      }
-
-      if (return_argument_ast) {
-        // FIXME: instrument others returns statements
-        // get code from AST
+      if (return_statement_path.length > 0) {
+        return_argument_ast = return_statement_path[0].value.argument;
         return_argument_source_code = new SourceCode({ ast: return_argument_ast });
         return_statement_code = return_argument_source_code.code;
       }
@@ -88,9 +83,16 @@ class Instrumenter {
   }
 
   static instrumentAllFunctions(sourceCode) {
+    // require
     Instrumenter.addDebugRequire(sourceCode);
+
+    // func info
     Instrumenter.addDebugToAllFunctionsCalls(sourceCode);
+
+    // func return
     Instrumenter.addDebugToAllFunctionsReturnStatements(sourceCode);
+
+    // get new code
     var source_code_new = new SourceCode({ ast: sourceCode.ast });
     return source_code_new.code;
   }

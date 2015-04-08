@@ -1,4 +1,6 @@
 var recast = require('recast');
+var ast_types = recast.types;
+// var R = require('ramda');
 
 /**
  * AstSearcher (static class)
@@ -25,8 +27,7 @@ module.exports = class AstSearcher {
    */
    static searchFunctions(ast) {
     var functions_list = [];
-    var types = recast.types;
-    types.visit(ast, {
+    ast_types.visit(ast, {
       visitFunction: function(path) {
         var node = path.node;
         functions_list.push(node);
@@ -42,9 +43,8 @@ module.exports = class AstSearcher {
    */
    static searchFunctionOnLocation(ast, current_line, current_column) {
     var selected_function = null;
-    var types = recast.types;
     var _isLocInsideFunction = this._isLocInsideFunction;
-    types.visit(ast, {
+    ast_types.visit(ast, {
       visitFunction: function(path) {
         var node = path.node;
         var loc = node.loc;
@@ -61,6 +61,10 @@ module.exports = class AstSearcher {
     return selected_function;
   }
 
+  /**
+   * Check if current_line, current_column is inside a location
+   * @return {Boolean}   isInside?
+   */
   static _isLocInsideFunction(current_line, current_column, loc) {
     // check if is inside lines
     if (current_line < loc.start.line || current_line > loc.end.line) {
@@ -100,15 +104,16 @@ module.exports = class AstSearcher {
    * @return {AST}   function's return expression AST
    */
   static searchFunctionReturnExpression(func_ast) {
-    var return_statements = [];
-    var types = recast.types;
-    types.visit(func_ast, {
+    var paths_to_return = [];
+
+    ast_types.visit(func_ast, {
       visitReturnStatement: function(path) {
-        return_statements.push(path.value);
+        paths_to_return.push(path);
         this.traverse(path);
       },
     });
-    return return_statements;
+
+    return paths_to_return;
   }
 
 };
