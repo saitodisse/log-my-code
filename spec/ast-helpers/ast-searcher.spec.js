@@ -32,7 +32,7 @@ describe('AstSearcher (static class):', function() {
   });
   //---------------------------------------------------------------
 
-  describe('searchFunctions:', function () {
+  describe('getAllFunctionsPaths:', function () {
 
     it('should search for one function', function() {
       var sourceCode = new SourceCode({ code: [
@@ -41,8 +41,8 @@ describe('AstSearcher (static class):', function() {
         '}',
       ].join('\n') });
 
-      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
-      h.expect(functions_list).to.have.length(1);
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      h.expect(functions_list_path).to.have.length(1);
     });
 
     it('should search for two functions', function() {
@@ -55,8 +55,8 @@ describe('AstSearcher (static class):', function() {
         '}',
       ].join('\n') });
 
-      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
-      h.expect(functions_list).to.have.length(2);
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      h.expect(functions_list_path).to.have.length(2);
     });
 
     it('should search for inner functions', function() {
@@ -72,14 +72,14 @@ describe('AstSearcher (static class):', function() {
         '}',
       ].join('\n') });
 
-      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
-      h.expect(functions_list).to.have.length(4);
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      h.expect(functions_list_path).to.have.length(4);
     });
 
   });
   //---------------------------------------------------------------
 
-  describe('searchFunctionName:', function () {
+  describe('getNameFromFunctionPath:', function () {
 
     it('should get "sum" name', function() {
       var sourceCode = new SourceCode({ code: [
@@ -88,8 +88,8 @@ describe('AstSearcher (static class):', function() {
         '}',
       ].join('\n') });
 
-      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
-      var function_name = AstSearcher.searchFunctionName(functions_list[0]);
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      var function_name = AstSearcher.getNameFromFunctionPath(functions_list_path[0]);
       h.expect(function_name).to.equal('sum');
     });
 
@@ -100,15 +100,15 @@ describe('AstSearcher (static class):', function() {
         '}',
       ].join('\n') });
 
-      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
-      var function_name = AstSearcher.searchFunctionName(functions_list[0]);
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      var function_name = AstSearcher.getNameFromFunctionPath(functions_list_path[0]);
       h.expect(function_name).to.equal('anonymous');
     });
 
   });
   //---------------------------------------------------------------
 
-  describe('searchFunctionReturnExpression:', function () {
+  describe('getReturnStatementFromFunctionPath:', function () {
 
     it('should get return expression', function() {
       var sourceCode = new SourceCode({ code: [
@@ -117,8 +117,8 @@ describe('AstSearcher (static class):', function() {
         '}',
       ].join('\n') });
 
-      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
-      var return_statements_path = AstSearcher.searchFunctionReturnExpression(functions_list[0]);
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      var return_statements_path = AstSearcher.getReturnStatementFromFunctionPath(functions_list_path[0]);
 
       var sourceCodeReturnExpression = new SourceCode({ ast: return_statements_path[0].value });
       h.expect(sourceCodeReturnExpression.code).to.equal('return a + b;');
@@ -131,8 +131,8 @@ describe('AstSearcher (static class):', function() {
         '}',
       ].join('\n') });
 
-      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
-      var return_statements_path = AstSearcher.searchFunctionReturnExpression(functions_list[0]);
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      var return_statements_path = AstSearcher.getReturnStatementFromFunctionPath(functions_list_path[0]);
 
       h.expect(return_statements_path).to.deep.equal([]);
     });
@@ -145,8 +145,8 @@ describe('AstSearcher (static class):', function() {
         '}',
       ].join('\n') });
 
-      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
-      var return_statements_path = AstSearcher.searchFunctionReturnExpression(functions_list[0]);
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      var return_statements_path = AstSearcher.getReturnStatementFromFunctionPath(functions_list_path[0]);
 
       h.expect(return_statements_path.length).to.deep.equal(2);
     });
@@ -176,7 +176,7 @@ describe('AstSearcher (static class):', function() {
   });
   //---------------------------------------------------------------
 
-  describe('searchFunctionOnLocation:', function () {
+  describe('getOnLocationFunctionPath:', function () {
 
     it('should search for one function', function() {
       var sourceCode = new SourceCode({ code: [
@@ -186,8 +186,8 @@ describe('AstSearcher (static class):', function() {
         '};',
       ].join('\n') });
 
-      h.expect(AstSearcher.searchFunctionOnLocation(sourceCode.ast, 1, 1)).to.be.null;
-      h.expect(AstSearcher.searchFunctionOnLocation(sourceCode.ast, 3, 1)).to.not.be.null;
+      h.expect(AstSearcher.getOnLocationFunctionPath(sourceCode.ast, 1, 1)).to.be.null;
+      h.expect(AstSearcher.getOnLocationFunctionPath(sourceCode.ast, 3, 1)).to.not.be.null;
     });
 
   });

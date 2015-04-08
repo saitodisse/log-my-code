@@ -4,7 +4,7 @@ var ast_types = recast.types;
 
 /**
  * AstSearcher (static class)
- * use directly: AstSearcher.searchFunctions(souceCode.ast);
+ * use directly: AstSearcher.getAllFunctionsPaths(souceCode.ast);
  */
 module.exports = class AstSearcher {
 
@@ -14,26 +14,25 @@ module.exports = class AstSearcher {
 
   /**
    * Search for all functions node on ast
-   * @return {Array}   All functions AST nodes
+   * @return {ast paths Array}   All functions AST nodes
    */
-   static searchFunctions(ast) {
-    var functions_list = [];
+  static getAllFunctionsPaths(ast) {
+    var functions_list_path = [];
     ast_types.visit(ast, {
       visitFunction: function(path) {
-        var node = path.node;
-        functions_list.push(node);
+        functions_list_path.push(path);
         this.traverse(path);
       },
     });
-    return functions_list;
+    return functions_list_path;
   }
 
   /**
    * Search for a functions on specified location
-   * @return {ast object}   the function node
+   * @return {ast path}   the function node
    */
-   static searchFunctionOnLocation(ast, current_line, current_column) {
-    var selected_function = null;
+  static getOnLocationFunctionPath(ast, current_line, current_column) {
+    var selected_function_path = null;
     var _isLocInsideFunction = this._isLocInsideFunction;
     ast_types.visit(ast, {
       visitFunction: function(path) {
@@ -42,14 +41,14 @@ module.exports = class AstSearcher {
 
         // loc start check
         if (_isLocInsideFunction(current_line, current_column, loc)) {
-          selected_function = node;
+          selected_function_path = path;
           return false;
         } else {
           this.traverse(path);
         }
       },
     });
-    return selected_function;
+    return selected_function_path;
   }
 
   /**
@@ -82,7 +81,8 @@ module.exports = class AstSearcher {
    * Search function name
    * @return {string}   function name
    */
-  static searchFunctionName(func_ast) {
+  static getNameFromFunctionPath(func_path) {
+    var func_ast = func_path.node;
     if (func_ast.id && func_ast.id.name) {
       return func_ast.id.name;
     } else {
@@ -92,9 +92,9 @@ module.exports = class AstSearcher {
 
   /**
    * Search function's return expression
-   * @return {AST}   function's return expression AST
+   * @return {ast path}   function's return expression AST
    */
-  static searchFunctionReturnExpression(func_ast) {
+  static getReturnStatementFromFunctionPath(func_ast) {
     var paths_to_return = [];
 
     ast_types.visit(func_ast, {

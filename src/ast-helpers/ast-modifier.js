@@ -16,9 +16,8 @@ class AstModifier {
    * @param {ast object}   snippet_ast      AST node
    */
   static insertSnippetBeforeMainProgramBody(original_ast, snippet_ast) {
-    var original_body_ast = original_ast.program.body;
-    original_body_ast = snippet_ast.concat(original_body_ast);
-    original_ast.program.body = original_body_ast;
+    // add snippet_ast to start of main program.body[]
+    original_ast.program.body = snippet_ast.concat(original_ast.program.body);
     return original_ast;
   }
 
@@ -61,25 +60,6 @@ class AstModifier {
 
     return function_node;
   }
-
-  // /**
-  //  * Insert a console.log(arguments) AST on function's body start
-  //  * @param {ast object}   function_node    AST node
-  //  */
-  // static instrumentInsertConsoleLogArgumentsBeforeFunction(function_node, console_content = 'arguments') {
-  //   var snippet_instance = new ConsoleLogSnippet(console_content);
-  //   this.insertSnippetBeforeFunctionBody(function_node, snippet_instance.ast);
-  // }
-  //
-  // /**
-  //  * Insert a console.log(arguments) AST on ALL function's body start
-  //  */
-  // static instrumentInsertConsoleLogArgumentsBeforeAllFunctions(console_content = 'arguments') {
-  //   var functions_list = this.searchFunctions();
-  //   return _.map( functions_list, function(func_node) {
-  //     this.instrumentInsertConsoleLogArgumentsBeforeFunction(func_node, console_content);
-  //   }, this);
-  // }
 
 }
 

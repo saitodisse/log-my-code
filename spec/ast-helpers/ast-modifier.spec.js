@@ -27,8 +27,8 @@ describe('AstModifier:', function() {
       ].join('\n') });
 
       // get function
-      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
-      var first_function_ast = functions_list[0];
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      var first_function_ast = functions_list_path[0].node;
 
       // get snippet AST
       var snippet_instance = new DebugDataSnippet('FUNCTION_NAME', first_function_ast.loc.start.line);
@@ -67,8 +67,8 @@ describe('AstModifier:', function() {
       ].join('\n') });
 
       // get function
-      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
-      var first_function_ast = functions_list[0];
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      var first_function_ast = functions_list_path[0].node;
 
       // get snippet AST
       var snippet_instance = new DebugReturnSnippet('a + b');
@@ -98,8 +98,8 @@ describe('AstModifier:', function() {
       ].join('\n') });
 
       // get function
-      var functions_list = AstSearcher.searchFunctions(sourceCode.ast);
-      var first_function_ast = functions_list[0];
+      var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
+      var first_function_ast = functions_list_path[0].node;
 
       // get snippet AST
       var snippet_instance = new DebugReturnSnippet('a + b');

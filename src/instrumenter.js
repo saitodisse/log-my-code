@@ -33,18 +33,18 @@ class Instrumenter {
   static addDebugToAllFunctionsCalls(sourceCode) {
 
     // get all functions
-    var allFunctions = AstSearcher.searchFunctions(sourceCode.ast);
+    var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
 
-    allFunctions.forEach(function (func) {
+    functions_list_path.forEach(function (func_path) {
       // get function's name
-      var func_name = AstSearcher.searchFunctionName(func);
+      var func_name = AstSearcher.getNameFromFunctionPath(func_path);
 
       // get snippet AST
-      var line = func.loc && func.loc.start.line;
+      var line = func_path.node.loc && func_path.node.loc.start.line;
       var snippet_instance = new DebugDataSnippet(func_name, line);
       var snippet_ast = snippet_instance.ast;
 
-      AstModifier.insertSnippetBeforeFunctionBody(func, snippet_ast);
+      AstModifier.insertSnippetBeforeFunctionBody(func_path.node, snippet_ast);
     });
 
     var source_code_new = new SourceCode({ ast: sourceCode.ast });
@@ -55,12 +55,13 @@ class Instrumenter {
   static addDebugToAllFunctionsReturnStatements(sourceCode) {
 
     // get all functions
-    var allFunctions = AstSearcher.searchFunctions(sourceCode.ast);
+    var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
 
-    allFunctions.forEach(function (func) {
+    functions_list_path.forEach(function (func_path) {
+      var func = func_path.node;
 
       // get current return statement
-      var return_statement_path = AstSearcher.searchFunctionReturnExpression(func);
+      var return_statement_path = AstSearcher.getReturnStatementFromFunctionPath(func);
 
       var return_argument_ast, return_argument_source_code, return_statement_code = '';
 
