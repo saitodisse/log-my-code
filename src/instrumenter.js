@@ -5,7 +5,8 @@ import AstInserter  from './ast-helpers/ast-inserter';
 import SourceCode  from './source-code';
 
 var RequireDebugSnippet = require('./snippets/require-debug');
-var DebugDataSnippet = require('./snippets/debug-data');
+var DebugDataSnippet    = require('./snippets/debug-data');
+var DebugReturnSnippet  = require('./snippets/debug-return');
 
 /**
  * Instrumenter (static class)
@@ -29,7 +30,7 @@ class Instrumenter {
     return source_code_new.code;
   }
 
-  static addDebugFunctionCall(sourceCode) {
+  static addDebugToAllFunctionsCalls(sourceCode) {
 
     // get all functions
     var allFunctions = AstSearcher.searchFunctions(sourceCode.ast);
@@ -47,6 +48,38 @@ class Instrumenter {
 
     var source_code_new = new SourceCode({ ast: sourceCode.ast });
 
+    return source_code_new.code;
+  }
+
+  static addDebugToAllFunctionsReturnStatements(sourceCode) {
+
+    // get all functions
+    var allFunctions = AstSearcher.searchFunctions(sourceCode.ast);
+
+    allFunctions.forEach(function (func) {
+
+      // get current return statement
+      var return_statement_ast = AstSearcher.searchFunctionReturnExpression(func);
+      var return_argument_ast = return_statement_ast[0].argument;
+
+      // get code from AST
+      var return_argument_source_code = new SourceCode({ ast: return_argument_ast });
+
+      // get snippet AST
+      var snippet_instance = new DebugReturnSnippet(return_argument_source_code.code);
+      var snippet_ast = snippet_instance.ast;
+
+      // insert Snippet On Return Function
+      AstInserter.replaceFunctionReturnWithSnippet(func, snippet_ast);
+    });
+
+    var source_code_new = new SourceCode({ ast: sourceCode.ast });
+    return source_code_new.code;
+  }
+
+  static instrumentAllFunctions(sourceCode) {
+    Instrumenter.addDebugRequire(sourceCode);
+    var source_code_new = new SourceCode({ ast: sourceCode.ast });
     return source_code_new.code;
   }
 

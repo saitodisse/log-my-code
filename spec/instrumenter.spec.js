@@ -24,6 +24,7 @@ describe('Instrumenter:', function() {
           "}",
         ].join('\n'),
         file: './some-file.js' });
+
       var new_code = Instrumenter.addDebugRequire(sourceCode);
 
       h.expect(new_code).to.eql([
@@ -40,7 +41,7 @@ describe('Instrumenter:', function() {
   });
   //---------------------------------------------------------------
 
-  describe('addDebugFunctionCall:', function () {
+  describe('addDebugToAllFunctionsCalls:', function () {
 
     it('should insert __debug_data__ on top of the function', function() {
       var sourceCode = new SourceCode({
@@ -52,7 +53,8 @@ describe('Instrumenter:', function() {
           "}",
         ].join('\n'),
         file: './some-file.js' });
-      var new_code = Instrumenter.addDebugFunctionCall(sourceCode);
+
+      var new_code = Instrumenter.addDebugToAllFunctionsCalls(sourceCode);
 
       h.expect(new_code).to.eql([
         "var path = require('path');",
@@ -65,6 +67,35 @@ describe('Instrumenter:', function() {
         "  };",
         "",
         "  return a + b;",
+        "}",
+      ].join('\n'));
+    });
+
+  });
+  //---------------------------------------------------------------
+
+  describe('addDebugToAllFunctionsReturnStatements:', function () {
+
+    it('should insert __debug_data__ on top of the function', function() {
+      var sourceCode = new SourceCode({
+        code: [
+          "var path = require('path');",
+          "",
+          "function sum(a, b) {",
+          "  return a + b;",
+          "}",
+        ].join('\n'),
+        file: './some-file.js' });
+
+      var new_code = Instrumenter.addDebugToAllFunctionsReturnStatements(sourceCode);
+
+      h.expect(new_code).to.eql([
+        "var path = require('path');",
+        "",
+        "function sum(a, b) {",
+        "  __debug_data__.return_data = (a + b);",
+        "  __astLoggerPrint__(debug, __debug_data__);",
+        "  return __debug_data__.return_data;",
         "}",
       ].join('\n'));
     });

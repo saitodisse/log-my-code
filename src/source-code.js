@@ -6,7 +6,8 @@ var instructions = [
   'You should create SourceCodeFile instance with code or filename:',
   ' code: `new SourceCodeFile( { code: \'var a = 1;\' } )`',
   ' file: `new SourceCodeFile( { file: \'./full/path/to/file.js\' } )`',
-].join(' ');
+  ' ast:  `new SourceCodeFile( { ast: ast_object } )`',
+].join('\n');
 
 /**
  * SourceCode

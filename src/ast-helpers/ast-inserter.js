@@ -42,6 +42,7 @@ class AstInserter {
     var types = recast.types;
     types.visit(function_node, {
       visitReturnStatement: function(path) {
+        // get all block from return
         var return_block_body = path.parentPath.value;
         return_block_body.pop();
 
@@ -53,13 +54,6 @@ class AstInserter {
       },
     });
     return function_node;
-
-    // return_statement_ast.pop();
-    // snippet_ast.forEach(function (ast_part) {
-    //   return_statement_ast.push(ast_part);
-    // });
-    // /**/console.log('\n>>---------\n return_statement_ast:\n', require('util').inspect(return_statement_ast, { showHidden: false, depth: 2, colors: true }), '\n>>---------\n');/*-debug-*/
-    // function_node.body.body.unshift(snippet_ast[0]);
   }
 
   // /**
