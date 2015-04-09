@@ -1,4 +1,4 @@
-var recast = require('recast');
+import { SourceCode }  from 'castborg';
 
 class RequireDebugSnippet {
   constructor(filename) {
@@ -19,8 +19,8 @@ class RequireDebugSnippet {
   }
 
   get ast() {
-    var full_ast = recast.parse(this._from_code);
-    return full_ast.program.body;
+    var source_code = new SourceCode( {code: this._from_code} );
+    return source_code.ast.program.body;
   }
 }
 
