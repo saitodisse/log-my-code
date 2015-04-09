@@ -1,6 +1,6 @@
 import h from './spec-helper';
 import Instrumenter from '../src/instrumenter';
-import SourceCode from '../src/source-code';
+import { SourceCode } from 'castborg';
 
 /**
  * instrumenter (static class)

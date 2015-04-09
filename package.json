@@ -1,11 +1,11 @@
 {
   "name": "ast-logger",
-  "version": "1.0.12",
+  "version": "0.0.12",
   "description": "ast-logger",
   "main": "index.js",
   "scripts": {
     "test": "gulp mocha",
-    "patch": "npm test && npm version patch && npm publish && git push"
+    "deploy": "./bin/npm-deploy"
   },
   "repository": {
     "type": "git",
@@ -20,34 +20,19 @@
   },
   "homepage": "https://github.com/azukiapp/ast-logger",
   "dependencies": {
-    "ast-logger-print": "0.0.4",
+    "ast-logger-print": "^0.0.4",
     "babel-runtime": "^5.0.10",
     "bluebird": "^2.9.24",
-    "colors": "^1.0.3",
+    "castborg": "^0.0.8",
     "debug": "^2.1.3",
     "fs-extra": "^0.18.0",
     "glob": "^5.0.3",
-    "lodash": "^3.6.0",
-    "nopt": "^3.0.1",
-    "printf": "^0.2.1",
-    "q": "^1.2.0",
     "ramda": "^0.13.0",
     "recast": "^0.10.11",
     "source-map-support": "^0.2.10"
   },
   "devDependencies": {
-    "chai": "^2.2.0",
-    "chai-as-promised": "^4.3.0",
-    "chai-things": "^0.2.0",
-    "gulp": "^3.8.11",
-    "gulp-babel": "^5.0.0",
-    "gulp-jscs": "^1.4.0",
-    "gulp-jshint": "^1.10.0",
-    "gulp-mocha": "^2.0.1",
-    "gulp-sourcemaps": "^1.5.1",
-    "jshint-stylish": "^1.0.1",
-    "rimraf": "^2.3.2",
-    "yargs": "^3.7.0"
+    "azk-dev": "0.0.5"
   },
   "engineStrict": true,
   "engines": {

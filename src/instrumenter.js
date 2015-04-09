@@ -1,8 +1,6 @@
 // var R = require('ramda');
 
-import AstSearcher  from './ast-helpers/ast-searcher';
-import AstModifier  from './ast-helpers/ast-modifier';
-import SourceCode  from './source-code';
+import { SourceCode, AstSearcher, AstModifier }  from 'castborg';
 
 var RequireDebugSnippet = require('./snippets/require-debug');
 var DebugDataSnippet    = require('./snippets/debug-data');
