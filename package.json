@@ -4,7 +4,7 @@
   "description": "ast-logger",
   "main": "index.js",
   "scripts": {
-    "test": "gulp mocha",
+    "test": "gulp test",
     "deploy": "./bin/npm-deploy"
   },
   "repository": {
