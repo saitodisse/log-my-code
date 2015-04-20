@@ -29,7 +29,7 @@ describe('Instrumenter:', function() {
 
       h.expect(new_code).to.eql([
         "var debug = require('debug')('./some-file.js');",
-        "var __astLoggerPrint__ = require('ast-logger-print');",
+        "var __astLoggerPrint__ = require('debug-print');",
         "var path = require('path');",
         "",
         "var sum = function(a, b) {",
@@ -124,7 +124,7 @@ describe('Instrumenter:', function() {
 
       h.expect(new_code).to.eql([
         "var debug = require('debug')('./some-file.js');",
-        "var __astLoggerPrint__ = require('ast-logger-print');",
+        "var __astLoggerPrint__ = require('debug-print');",
         "var path = require('path');",
         "",
         "function sum(a, b) {",
@@ -171,7 +171,7 @@ describe('Instrumenter:', function() {
 
       h.expect(new_code).to.eql([
         "var debug = require('debug')('./some-file.js');",
-        "var __astLoggerPrint__ = require('ast-logger-print');",
+        "var __astLoggerPrint__ = require('debug-print');",
         "setTimeout(function () {",
         "  var __debug_data__ = {",
         "    name: 'anonymous',",

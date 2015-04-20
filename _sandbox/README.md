@@ -15,17 +15,17 @@ npm i
 DEBUG=* ./file1.js
 ```
 
-![alt text](https://files.gitter.im/saitodisse/nEwd/blob "Result")
+![alt text](https://files.gitter.im/debug-print/nEwd/blob "Result")
 
 
 ## Proposal
 
-- [x] create a **debug-ast-logger** npm package based on this `ast-logger-print.js` file
+- [x] create a **debug-log-my-code** npm package based on this `debug-print.js` file
 
 - [x] insert snippet below at top of the file
 ```js
 var debug = require('debug')('__FILE_NAME_HERE__');
-var __astLoggerPrint__ = require('ast-logger-print');
+var __astLoggerPrint__ = require('debug-print');
 ```
 
 - [x] insert snippet below on top of each function

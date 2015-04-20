@@ -1,7 +1,7 @@
 {
-  "name": "ast-logger",
+  "name": "log-my-code",
   "version": "0.0.15",
-  "description": "ast-logger",
+  "description": "log-my-code",
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
@@ -9,29 +9,29 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/azukiapp/ast-logger.git"
+    "url": "https://github.com/saitodisse/log-my-code.git"
   },
   "keywords": [
     "azk"
   ],
   "license": "Apache License",
   "bugs": {
-    "url": "https://github.com/azukiapp/ast-logger/issues"
+    "url": "https://github.com/saitodisse/log-my-code/issues"
   },
-  "homepage": "https://github.com/azukiapp/ast-logger",
+  "homepage": "https://github.com/saitodisse/log-my-code",
   "dependencies": {
-    "ast-logger-print": "^0.0.4",
-    "babel-runtime": "^5.0.12",
+    "debug-print": "*",
+    "babel-runtime": "^5.1.11",
     "bluebird": "^2.9.24",
     "castborg": "^0.0.9",
     "debug": "^2.1.3",
-    "fs-extra": "^0.18.0",
-    "glob": "^5.0.3",
+    "fs-extra": "^0.18.2",
+    "glob": "^5.0.5",
     "ramda": "^0.13.0",
     "source-map-support": "^0.2.10"
   },
   "devDependencies": {
-    "azk-dev": "0.0.5"
+    "azk-dev": "0.0.15"
   },
   "engineStrict": true,
   "engines": {

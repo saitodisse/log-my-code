@@ -13,7 +13,7 @@ class RequireDebugSnippet {
 
     this._from_code = [
       'var debug = require(\'debug\')(' + filename + ');',
-      'var __astLoggerPrint__ = require(\'ast-logger-print\');',
+      'var __astLoggerPrint__ = require(\'debug-print\');',
       '',
     ].join('\n');
   }

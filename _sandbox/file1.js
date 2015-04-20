@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var debug = require('debug')('file1.js');
-var __astLoggerPrint__ = require('ast-logger-print');
+var __astLoggerPrint__ = require('debug-print');
 
 var inner = require('./folder/file2.js');
 

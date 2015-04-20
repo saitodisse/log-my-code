@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ast-logger-print": "0.0.2",
+    "debug-print": "0.0.2",
     "debug": "^2.1.3"
   }
 }

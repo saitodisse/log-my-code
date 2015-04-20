@@ -1,5 +1,5 @@
 var debug = require('debug')('inner/file2.js');
-var __astLoggerPrint__ = require('ast-logger-print');
+var __astLoggerPrint__ = require('debug-print');
 
 module.exports = {
   sum_inner: function(a, b) {

@@ -1,14 +1,14 @@
 # ast-cyborg (Log My Code)
 
-`ast-logger` will parse all the code searching functions.
+`log-my-code` will parse all the code searching functions.
 Allow to add and remove instrumentation code.
 
 code -> SourceCode1 -> Searcher.searchFunction -> Modifier.excludeFunction -> ast -> SourceCode2.code
 
-ast-logger can receive code / AST / filepath (JavaScript file) and parse its contents
+log-my-code can receive code / AST / filepath (JavaScript file) and parse its contents
 to a SourceCode class that will contain a version of the code and AST.
 
-ast-logger can also search inside the AST, and modify parts of it. It will then return
+log-my-code can also search inside the AST, and modify parts of it. It will then return
 a new copy of the existing code / AST / filepath.
 
 - **src**:  all files will transpiled with babel to lib/src
@@ -59,7 +59,7 @@ Result:
 
 ```js
 var debug = require('debug')('./some-file.js');
-var __astLoggerPrint__ = require('ast-logger-print');
+var __astLoggerPrint__ = require('debug-print');
 
 function sum(a, b) {
   var __debug_data__ = {
@@ -74,7 +74,7 @@ function sum(a, b) {
 }
 ```
 
-obs: will need to install this lib: `npm install ast-logger-print`
+obs: will need to install this lib: `npm install debug-print`
 
 #### before start
 
