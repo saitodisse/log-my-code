@@ -22,11 +22,15 @@ class Instrumenter {
     functions_list_path.forEach(function (func_path) {
       var func = func_path.node;
 
-      // get current return statement
+      // get function's name
+      var func_name = AstSearcher.getNameFromFunctionPath(func_path);
+
+      // get snippet AST
+      var line = func_path.node.loc && func_path.node.loc.start.line;
+
+      // get current return statement (TODO: more them one return statement)
+      var return_argument_ast, return_argument_source_code, return_statement_code;
       var return_statement_path = AstSearcher.getReturnStatementFromFunctionPath(func);
-
-      var return_argument_ast, return_argument_source_code, return_statement_code = '';
-
       if (return_statement_path.length > 0) {
         return_argument_ast = return_statement_path[0].value.argument;
         return_argument_source_code = new SourceCode({ ast: return_argument_ast });
@@ -34,7 +38,7 @@ class Instrumenter {
       }
 
       // get snippet AST
-      var snippet_instance = new DebugReturnSnippet(return_statement_code);
+      var snippet_instance = new DebugReturnSnippet(func_name, line, return_statement_code);
       var snippet_ast = snippet_instance.ast;
 
       // insert Snippet On Return Function
@@ -46,12 +50,6 @@ class Instrumenter {
   }
 
   static instrumentAllFunctions(sourceCode) {
-    // // require
-    // Instrumenter.addDebugRequire(sourceCode);
-    //
-    // // func info
-    // Instrumenter.addDebugToAllFunctionsCalls(sourceCode);
-
     // func return
     Instrumenter.addDebugToAllFunctionsReturnStatements(sourceCode);
 

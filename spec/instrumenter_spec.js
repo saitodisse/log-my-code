@@ -37,8 +37,7 @@ describe('Instrumenter:', function() {
         "var path = require('path');",
         "",
         "function sum(a, b) {",
-        "  var __return__ = require('debug-print').debug({ name: 'a + b', arguments: arguments, line: {original_line: undefined}, return_data: 'no_ret' }, __filename);",
-        "  return __return__;",
+        "  return require('debug-print').debug({ name: 'sum', arguments: arguments, line: {original_line: 3}, return_data: (a + b) }, __filename);",
         "}",
       ];
       h.expect(new_code_splited).to.eql(code_expected);
@@ -76,13 +75,11 @@ describe('Instrumenter:', function() {
         "var path = require('path');",
         "",
         "function sum(a, b) {",
-        "  var __return__ = require('debug-print').debug({ name: 'a + b', arguments: arguments, line: {original_line: undefined}, return_data: 'no_ret' }, __filename);",
-        "  return __return__;",
+        "  return require('debug-print').debug({ name: 'sum', arguments: arguments, line: {original_line: 3}, return_data: (a + b) }, __filename);",
         "}",
         "",
         "function times(a, b) {",
-        "  var __return__ = require('debug-print').debug({ name: 'a * b', arguments: arguments, line: {original_line: undefined}, return_data: 'no_ret' }, __filename);",
-        "  return __return__;",
+        "  return require('debug-print').debug({ name: 'times', arguments: arguments, line: {original_line: 7}, return_data: (a * b) }, __filename);",
         "}",
       ];
       h.expect(new_code_splited).to.eql(code_expected);
@@ -117,11 +114,9 @@ describe('Instrumenter:', function() {
         "    total = total + inner.sum_inner(0, 2);",
         "    // TOTAL",
         "    console.log('total:', total);",
-        "    var __return__ = require('debug-print').debug({ name: '', arguments: arguments, line: {original_line: undefined}, return_data: 'no_ret' }, __filename);",
-        "    return __return__;",
+        "    return require('debug-print').debug({ name: 'anonymous', arguments: arguments, line: {original_line: 3}, return_data: ('VOID') }, __filename);",
         "  }, 200);",
-        "  var __return__ = require('debug-print').debug({ name: '', arguments: arguments, line: {original_line: undefined}, return_data: 'no_ret' }, __filename);",
-        "  return __return__;",
+        "  return require('debug-print').debug({ name: 'anonymous', arguments: arguments, line: {original_line: 1}, return_data: ('VOID') }, __filename);",
         "}, 200);",
       ];
       h.expect(new_code_splited).to.eql(code_expected);

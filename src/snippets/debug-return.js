@@ -1,17 +1,16 @@
 import { SourceCode }  from 'castborg';
 
 class DebugReturnSnippet {
-  constructor(function_name, original_line_number, return_statement_code) {
-    if (!return_statement_code) {
-      return_statement_code = "'no_ret'";
-    }
-
-    // jscs:disable maximumLineLength
+  constructor(function_name = "anonymous", original_line_number = -1, return_statement_code = "'VOID'") {
     this._from_code = [
-      "var __return__ = require('debug-print').debug({ name: '" + function_name + "', arguments: arguments, line: {original_line: " + original_line_number + "}, return_data: " + return_statement_code + " }, __filename);",
-      "return __return__;",
-    ].join('\n');
-    // jscs:enable maximumLineLength
+      "return require('debug-print').debug({ name: '",
+      function_name,
+      "', arguments: arguments, line: {original_line: ",
+      original_line_number,
+      "}, return_data: (",
+      return_statement_code,
+      ") }, __filename);"
+    ].join('');
   }
 
   get ast() {
