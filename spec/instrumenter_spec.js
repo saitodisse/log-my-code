@@ -44,6 +44,41 @@ describe('Instrumenter:', function() {
 
     });
 
+    it('should work with constructors', function() {
+
+      // original code
+      var original_code = [
+        "class SomeClass {",
+        "",
+        "  constructor(opts) {",
+        "    this._opts = opts || {};",
+        "  }",
+        "",
+        "}",
+      ];
+      var sourceCode = new SourceCode({
+        code: original_code.join('\n')
+      });
+
+      // convert
+      var new_code = Instrumenter.addDebugToAllFunctionsReturnStatements(sourceCode);
+      var new_code_splited = new_code.split('\n');
+
+      // check
+      var code_expected = [
+        "class SomeClass {",
+        "",
+        "  constructor(opts) {",
+        "    this._opts = opts || {};",
+        "    return require('debug-print').debug({ name: 'new SomeClass()', arguments: arguments, line: {original_line: 3}, return_data: ('VOID') }, __filename);",
+        "  }",
+        "",
+        "}",
+      ];
+      h.expect(new_code_splited).to.eql(code_expected);
+
+    });
+
   });
   //---------------------------------------------------------------
 

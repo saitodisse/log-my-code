@@ -20,16 +20,21 @@ class Instrumenter {
     var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
 
     functions_list_path.forEach(function (func_path) {
+      var return_argument_ast, return_argument_source_code, return_statement_code;
+
       var func = func_path.node;
 
       // get function's name
       var func_name = AstSearcher.getNameFromFunctionPath(func_path);
 
       // get snippet AST
-      var line = func_path.node.loc && func_path.node.loc.start.line;
+      var line = (func_path.node.loc && func_path.node.loc.start.line) || null;
+      if (!line) {
+        // try get location from mother
+        line = (func_path.parent.node.loc && func_path.parent.node.loc.start.line) || null;
+      }
 
       // get current return statement (TODO: more them one return statement)
-      var return_argument_ast, return_argument_source_code, return_statement_code;
       var return_statement_path = AstSearcher.getReturnStatementFromFunctionPath(func);
       if (return_statement_path.length > 0) {
         return_argument_ast = return_statement_path[0].value.argument;
