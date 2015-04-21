@@ -8,7 +8,7 @@ class DebugReturnSnippet {
 
     // jscs:disable maximumLineLength
     this._from_code = [
-      "var __return__ = require('../index').debug({ name: '" + function_name + "', arguments: arguments, line: {original_line: " + original_line_number + "}, return_data: " + return_statement_code + " }, __filename);",
+      "var __return__ = require('debug-print').debug({ name: '" + function_name + "', arguments: arguments, line: {original_line: " + original_line_number + "}, return_data: " + return_statement_code + " }, __filename);",
       "return __return__;",
     ].join('\n');
     // jscs:enable maximumLineLength
