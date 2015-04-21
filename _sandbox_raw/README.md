@@ -3,7 +3,6 @@
 #### install debug and debug-print
 
 ```
-npm i debug
 npm i debug-print
 ```
 
