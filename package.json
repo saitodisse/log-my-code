@@ -1,6 +1,6 @@
 {
   "name": "log-my-code",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "log-my-code",
   "main": "index.js",
   "scripts": {
