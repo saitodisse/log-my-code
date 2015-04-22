@@ -31,7 +31,8 @@
     "source-map-support": "^0.2.10"
   },
   "devDependencies": {
-    "azk-dev": "0.0.15"
+    "azk-dev": "0.0.15",
+    "chalk": "^1.0.0"
   },
   "engineStrict": true,
   "engines": {
