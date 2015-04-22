@@ -37,7 +37,8 @@ describe('Instrumenter:', function() {
         "var path = require('path');",
         "",
         "function sum(a, b) {",
-        "  return require('debug-print').debug({ name: 'sum', arguments: arguments, line: {original_line: 3}, return_data: (a + b) }, __filename);",
+        "  return require('debug-print').debug({ name: 'sum', arguments: arguments, line: {original_line: 3},",
+        "    return_data: (a + b) }, __filename);",
         "}",
       ];
       h.expect(new_code_splited).to.eql(code_expected);
@@ -70,7 +71,8 @@ describe('Instrumenter:', function() {
         "",
         "  constructor(opts) {",
         "    this._opts = opts || {};",
-        "    return require('debug-print').debug({ name: 'new SomeClass()', arguments: arguments, line: {original_line: 3}, return_data: ('VOID') }, __filename);",
+        "    return require('debug-print').debug({ name: 'new SomeClass()', arguments: arguments, line: {original_line: 3},",
+        "      return_data: ('VOID') }, __filename);",
         "  }",
         "",
         "}",
@@ -83,28 +85,10 @@ describe('Instrumenter:', function() {
 
       // original code
       var original_code = [
-        "class SomeClass {",
-        "",
-        "  removeImage(imageId) {",
-        "    return Q.async(function* () {",
-        "",
-        "      var image = yield this.getImage(imageId);",
-        "",
-        "      var handler = function (err, data) {",
-        "        if (err) {",
-        "          throw err;",
-        "        }",
-        "",
-        "        log.debug('\\n\\n:: docker-remote - removeImage ::');",
-        "        log.debug(data);",
-        "        return data;",
-        "      };",
-        "",
-        "      image.remove(handler);",
-        "",
-        "    }.bind(this))();",
-        "  }",
-        "",
+        "() => {",
+        "  var handler = function (err, data) {",
+        "    return data;",
+        "  };",
         "}",
       ];
       var sourceCode = new SourceCode({
@@ -117,30 +101,7 @@ describe('Instrumenter:', function() {
 
       // check
       var code_expected = [
-        "class SomeClass {",
         "",
-        "  removeImage(imageId) {",
-        "    return Q.async(function* () {",
-        "",
-        "      var image = yield this.getImage(imageId);",
-        "",
-        "      var handler = function (err, data) {",
-        "        if (err) {",
-        "          throw err;",
-        "        }",
-        "",
-        "        log.debug('\\n\\n:: docker-remote - removeImage ::');",
-        "        log.debug(data);",
-        "        return data;",
-        "      };",
-        "",
-        "      image.remove(handler);",
-        "",
-        "    }.bind(this))();",
-        "  }",
-        "",
-        "}",
-
       ];
       h.expect(new_code_splited).to.eql(code_expected);
 
@@ -177,11 +138,13 @@ describe('Instrumenter:', function() {
         "var path = require('path');",
         "",
         "function sum(a, b) {",
-        "  return require('debug-print').debug({ name: 'sum', arguments: arguments, line: {original_line: 3}, return_data: (a + b) }, __filename);",
+        "  return require('debug-print').debug({ name: 'sum', arguments: arguments, line: {original_line: 3},",
+        "    return_data: (a + b) }, __filename);",
         "}",
         "",
         "function times(a, b) {",
-        "  return require('debug-print').debug({ name: 'times', arguments: arguments, line: {original_line: 7}, return_data: (a * b) }, __filename);",
+        "  return require('debug-print').debug({ name: 'times', arguments: arguments, line: {original_line: 7},",
+        "    return_data: (a * b) }, __filename);",
         "}",
       ];
       h.expect(new_code_splited).to.eql(code_expected);
@@ -216,9 +179,11 @@ describe('Instrumenter:', function() {
         "    total = total + inner.sum_inner(0, 2);",
         "    // TOTAL",
         "    console.log('total:', total);",
-        "    return require('debug-print').debug({ name: 'anonymous', arguments: arguments, line: {original_line: 3}, return_data: ('VOID') }, __filename);",
+        "    return require('debug-print').debug({ name: 'anonymous', arguments: arguments, line: {original_line: 3},",
+        "      return_data: ('VOID') }, __filename);",
         "  }, 200);",
-        "  return require('debug-print').debug({ name: 'anonymous', arguments: arguments, line: {original_line: 1}, return_data: ('VOID') }, __filename);",
+        "  return require('debug-print').debug({ name: 'anonymous', arguments: arguments, line: {original_line: 1},",
+        "    return_data: ('VOID') }, __filename);",
         "}, 200);",
       ];
       h.expect(new_code_splited).to.eql(code_expected);

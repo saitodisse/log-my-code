@@ -7,7 +7,8 @@ class DebugReturnSnippet {
       function_name,
       "', arguments: arguments, line: {original_line: ",
       original_line_number,
-      "}, return_data: (",
+      "},",
+      "\n  return_data: (",
       return_statement_code,
       ") }, __filename);"
     ].join('');

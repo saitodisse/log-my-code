@@ -24,18 +24,23 @@ class Instrumenter {
 
       var func = func_path.node;
 
+      /**/console.log('\n>>---------\n func.type:', func.type, '\n>>---------\n');/*-debug-*/
+
       // get function's name
       var func_name = AstSearcher.getNameFromFunctionPath(func_path);
 
       // get snippet AST
       var line = (func_path.node.loc && func_path.node.loc.start.line) || null;
-      if (!line) {
+      if (line === null) {
         // try get location from mother
         line = (func_path.parent.node.loc && func_path.parent.node.loc.start.line) || null;
       }
 
       // get current return statement (TODO: more them one return statement)
       var return_statement_path = AstSearcher.getReturnStatementFromFunctionPath(func);
+
+      /**/console.log('\n>>---------\n return_statement_path:', return_statement_path, '\n>>---------\n');/*-debug-*/
+
       if (return_statement_path.length > 0) {
         return_argument_ast = return_statement_path[0].value.argument;
         return_argument_source_code = new SourceCode({ ast: return_argument_ast });
