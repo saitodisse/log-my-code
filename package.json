@@ -20,10 +20,9 @@
   },
   "homepage": "https://github.com/saitodisse/log-my-code",
   "dependencies": {
-    "debug-print": "*",
     "babel-runtime": "^5.1.11",
     "bluebird": "^2.9.24",
-    "castborg": "^0.0.9",
+    "castborg": "*",
     "debug": "^2.1.3",
     "fs-extra": "^0.18.2",
     "glob": "^5.0.5",

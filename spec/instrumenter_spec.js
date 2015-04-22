@@ -79,6 +79,73 @@ describe('Instrumenter:', function() {
 
     });
 
+    it('should work with generators', function() {
+
+      // original code
+      var original_code = [
+        "class SomeClass {",
+        "",
+        "  removeImage(imageId) {",
+        "    return Q.async(function* () {",
+        "",
+        "      var image = yield this.getImage(imageId);",
+        "",
+        "      var handler = function (err, data) {",
+        "        if (err) {",
+        "          throw err;",
+        "        }",
+        "",
+        "        log.debug('\\n\\n:: docker-remote - removeImage ::');",
+        "        log.debug(data);",
+        "        return data;",
+        "      };",
+        "",
+        "      image.remove(handler);",
+        "",
+        "    }.bind(this))();",
+        "  }",
+        "",
+        "}",
+      ];
+      var sourceCode = new SourceCode({
+        code: original_code.join('\n')
+      });
+
+      // convert
+      var new_code = Instrumenter.addDebugToAllFunctionsReturnStatements(sourceCode);
+      var new_code_splited = new_code.split('\n');
+
+      // check
+      var code_expected = [
+        "class SomeClass {",
+        "",
+        "  removeImage(imageId) {",
+        "    return Q.async(function* () {",
+        "",
+        "      var image = yield this.getImage(imageId);",
+        "",
+        "      var handler = function (err, data) {",
+        "        if (err) {",
+        "          throw err;",
+        "        }",
+        "",
+        "        log.debug('\\n\\n:: docker-remote - removeImage ::');",
+        "        log.debug(data);",
+        "        return data;",
+        "      };",
+        "",
+        "      image.remove(handler);",
+        "",
+        "    }.bind(this))();",
+        "  }",
+        "",
+        "}",
+
+      ];
+      h.expect(new_code_splited).to.eql(code_expected);
+
+    });
+
   });
   //---------------------------------------------------------------
 
