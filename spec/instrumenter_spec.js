@@ -81,7 +81,7 @@ describe('Instrumenter:', function() {
 
     });
 
-    it('should work with generators', function() {
+    it('should work with callbacks', function() {
 
       // original code
       var original_code = [

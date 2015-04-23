@@ -1,6 +1,6 @@
-// var R = require('ramda');
+var R = require('ramda');
 
-import { SourceCode, AstSearcher, AstModifier }  from 'castborg';
+import { SourceCode, AstSearcher, AstModifier, printCode }  from 'castborg';
 
 var DebugReturnSnippet  = require('./snippets/debug-return');
 
@@ -16,15 +16,16 @@ class Instrumenter {
 
   static addDebugToAllFunctionsReturnStatements(sourceCode) {
 
+    printCode('initial', sourceCode.code);
+
     // get all functions
     var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
-
-    functions_list_path.forEach(function (func_path) {
+    R.map(function (func_path) {
       var return_argument_ast, return_argument_source_code, return_statement_code;
 
       var func = func_path.node;
 
-      /**/console.log('\n>>---------\n func.type:', func.type, '\n>>---------\n');/*-debug-*/
+      printCode('func', func);
 
       // get function's name
       var func_name = AstSearcher.getNameFromFunctionPath(func_path);
@@ -39,8 +40,6 @@ class Instrumenter {
       // get current return statement (TODO: more them one return statement)
       var return_statement_path = AstSearcher.getReturnStatementFromFunctionPath(func);
 
-      /**/console.log('\n>>---------\n return_statement_path:', return_statement_path, '\n>>---------\n');/*-debug-*/
-
       if (return_statement_path.length > 0) {
         return_argument_ast = return_statement_path[0].value.argument;
         return_argument_source_code = new SourceCode({ ast: return_argument_ast });
@@ -53,7 +52,10 @@ class Instrumenter {
 
       // insert Snippet On Return Function
       AstModifier.replaceFunctionReturnWithSnippet(func, snippet_ast);
-    });
+
+      printCode('replaceFunctionReturnWithSnippet', func);
+
+    }, R.reverse(functions_list_path));
 
     var source_code_new = new SourceCode({ ast: sourceCode.ast });
     return source_code_new.code;
