@@ -101,7 +101,12 @@ describe('Instrumenter:', function() {
 
       // check
       var code_expected = [
-        "",
+        "() => {",
+        "  var handler = function (err, data) {",
+        "    return require('debug-print').debug({ name: 'handler', arguments: arguments, line: {original_line: 2},",
+        "      return_data: (data) }, __filename);",
+        "  };",
+        "}",
       ];
       h.expect(new_code_splited).to.eql(code_expected);
 
