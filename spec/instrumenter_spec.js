@@ -106,6 +106,8 @@ describe('Instrumenter:', function() {
         "    return require('debug-print').debug({ name: 'handler', arguments: arguments, line: {original_line: 2},",
         "      return_data: (data) }, __filename);",
         "  };",
+        "  return require('debug-print').debug({ name: 'anonymous', arguments: arguments, line: {original_line: 1},",
+        "    return_data: ('VOID') }, __filename);",
         "}",
       ];
       h.expect(new_code_splited).to.eql(code_expected);

@@ -54,7 +54,11 @@ class Instrumenter {
 
       // get current return statement (TODO: more them one return statement)
       var return_statement_path = AstSearcher.getReturnStatementFromFunctionPath(func);
-      var return_argument = return_statement_path[0].value.argument;
+      var has_return_statement = return_statement_path.length > 0;
+      debug('has_return_statement:');
+      debug(has_return_statement);
+
+      var return_argument = has_return_statement && return_statement_path[0].value.argument;
 
       debug(hightLightCode('return_argument', return_argument));
 
