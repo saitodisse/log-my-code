@@ -1,18 +1,27 @@
 import { SourceCode }  from 'castborg';
 
 class DebugReturnSnippet {
-  constructor(function_name = "anonymous", original_line_number = -1, return_statement_code = "'VOID'") {
-    this._from_code = [
-      "return require('debug-print').debug({ name: '",
-      function_name,
-      "', arguments: arguments, line: {original_line: ",
-      original_line_number,
-      "},",
-      "\n  return_data: (",
-      return_statement_code,
-      ") }, __filename);"
-    ].join('');
-  }
+
+  constructor(hasReturn             = false,
+    function_name         = "anonymous",
+    original_line_number  = -1,
+    return_statement_code = "'VOID'") {
+
+      this._from_code = [
+
+        // if has retirn statement, will include here
+        hasReturn === true ? "return " : "",
+
+        "require('debug-print').debug({ name: '",
+        function_name,
+        "', arguments: arguments, line: {original_line: ",
+        original_line_number,
+        "},",
+        "\n  return_data: (",
+        return_statement_code,
+        ") }, __filename);"
+      ].join('');
+    }
 
   get ast() {
     var source_code = new SourceCode( {code: this._from_code} );

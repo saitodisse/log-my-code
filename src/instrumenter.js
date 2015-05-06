@@ -68,15 +68,17 @@ class Instrumenter {
       debug(was_intrumented);
       // do not instrument again
       if (!was_intrumented) {
+        var hasReturn = false;
         if (return_statement_path.length > 0) {
           // has return statement
           return_argument_ast = return_statement_path[0].value.argument;
           return_argument_source_code = new SourceCode({ ast: return_argument_ast });
           return_statement_code = return_argument_source_code.code;
+          hasReturn = true;
         }
 
         // get snippet AST
-        var snippet_instance = new DebugReturnSnippet(func_name, line, return_statement_code);
+        var snippet_instance = new DebugReturnSnippet(hasReturn, func_name, line, return_statement_code);
         var snippet_ast = snippet_instance.ast;
 
         // insert Snippet On Return Function
