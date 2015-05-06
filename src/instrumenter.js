@@ -1,7 +1,7 @@
 var R = require('ramda');
 var debug = require('debug')('logmycode:instrumenter');
 
-import { SourceCode, AstSearcher, AstModifier, hightLightCode } from 'castborg';
+import { SourceCode, AstSearcher, AstModifier, hightLightCode, hightLightAST } from 'castborg';
 
 var DebugReturnSnippet  = require('./snippets/debug-return');
 
@@ -29,8 +29,8 @@ class Instrumenter {
 
   static addDebugToAllFunctionsReturnStatements(sourceCode) {
 
-    debug('addDebugToAllFunctionsReturnStatements()');
-    debug(hightLightCode('sourceCode', sourceCode.code));
+    // debug('addDebugToAllFunctionsReturnStatements()');
+    // debug(hightLightCode('sourceCode', sourceCode.code));
 
     // get all functions
     var functions_list_path = AstSearcher.getAllFunctionsPaths(sourceCode.ast);
@@ -72,7 +72,15 @@ class Instrumenter {
         if (return_statement_path.length > 0) {
           // has return statement
           return_argument_ast = return_statement_path[0].value.argument;
-          return_argument_source_code = new SourceCode({ ast: return_argument_ast });
+
+          try {
+            return_argument_source_code = new SourceCode({ ast: return_argument_ast });
+          } catch (err) {
+            debug('Error parsing AST', err.message);
+            debug(hightLightAST(return_argument_ast));
+            throw err;
+          }
+
           return_statement_code = return_argument_source_code.code;
           hasReturn = true;
         }
@@ -82,7 +90,7 @@ class Instrumenter {
         var snippet_ast = snippet_instance.ast;
 
         // insert Snippet On Return Function
-        AstModifier.replaceFunctionReturnWithSnippet(func, snippet_ast);
+        AstModifier.insertSnippetBeforeReturns(func, snippet_ast);
       }
 
     }, R.reverse(functions_list_path)); // reverse order, first functions most inside

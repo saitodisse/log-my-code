@@ -39,6 +39,7 @@ describe('Instrumenter:', function() {
         "function sum(a, b) {",
         "  return require('debug-print').debug({ name: 'sum', arguments: arguments, line: {original_line: 3},",
         "    return_data: (a + b) }, __filename);",
+        "  return a + b;",
         "}",
       ];
       h.expect(new_code_splited).to.eql(code_expected);
@@ -105,6 +106,7 @@ describe('Instrumenter:', function() {
         "  var handler = function (err, data) {",
         "    return require('debug-print').debug({ name: 'handler', arguments: arguments, line: {original_line: 2},",
         "      return_data: (data) }, __filename);",
+        "    return data;",
         "  };",
         "  require('debug-print').debug({ name: 'anonymous', arguments: arguments, line: {original_line: 1},",
         "    return_data: ('VOID') }, __filename);",
@@ -147,11 +149,13 @@ describe('Instrumenter:', function() {
         "function sum(a, b) {",
         "  return require('debug-print').debug({ name: 'sum', arguments: arguments, line: {original_line: 3},",
         "    return_data: (a + b) }, __filename);",
+        "  return a + b;",
         "}",
         "",
         "function times(a, b) {",
         "  return require('debug-print').debug({ name: 'times', arguments: arguments, line: {original_line: 7},",
         "    return_data: (a * b) }, __filename);",
+        "  return a * b;",
         "}",
       ];
       h.expect(new_code_splited).to.eql(code_expected);
